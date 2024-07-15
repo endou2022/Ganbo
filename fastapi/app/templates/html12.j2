@@ -1,0 +1,60 @@
+{% autoescape True %}
+		<div class="scroll-box">
+		<table class="program_list striped_pattern">
+			<thead>
+				<tr>
+					<th class="_sticky">予約状況</th>
+					<th class="_sticky">サービス名</th>
+					<th class="_sticky">放送時間</th>
+					<th class="_sticky">番組名</th>
+					<th class="_sticky">ジャンル</th>
+					<th class="_sticky">自動予約キーワード</th>
+				</tr>
+			</thead>
+			<tbody>
+				<!-- 終了番組 -->
+				<tr style="background-color:white;">
+					<td colspan="6" style="text-align:left;font-weight:bold;" >終了番組</td>
+				</tr>
+				{% set date_str = namespace(old = '') %}
+				{%- for program in final_program_list %}
+				{%- if date_str.old != program['放送日'] %}
+				<tr>
+					<th colspan="6" class="separater">{{program['放送日']}}</th>
+				</tr>
+				{% set date_str.old = program['放送日'] %}
+				{%- endif -%}
+				<tr id="{{program['ID']}}" class="{{program['rec_status']}}">
+					<td class="toggle_reserve">{{program['予約状況']}}</td>
+					<td>{{program['サービス名']}}</td>
+					<td>{{program['時間']}}</td>
+					<td class="program_name">{{program['番組名']}}</td>
+					<td>{{program['ジャンル']}}</td>
+					<td>{{program['自動予約']}}</td>
+				</tr>
+				{%- endfor %}
+
+				<!-- 新番組 -->
+				<tr style="background-color:white;">
+					<td colspan="6" style="text-align:left;font-weight:bold;" >新番組</td>
+				</tr>
+				{% set date_str = namespace(old = '') %}
+				{%- for program in new_program_list %}
+				{%- if date_str.old != program['放送日'] %}
+				<tr>
+					<th colspan="6" class="separater">{{program['放送日']}}</th>
+				</tr>
+				{% set date_str.old = program['放送日'] %}
+				{%- endif -%}
+				<tr id="{{program['ID']}}" class="{{program['rec_status']}}">
+					<td class="toggle_reserve">{{program['予約状況']}}</td>
+					<td>{{program['サービス名']}}</td>
+					<td>{{program['時間']}}</td>
+					<td class="program_name">{{program['番組名']}}</td>
+					<td>{{program['ジャンル']}}</td>
+					<td>{{program['自動予約']}}</td>
+				</tr>
+				{%- endfor %}
+		</table>
+		</div>
+{% endautoescape %}

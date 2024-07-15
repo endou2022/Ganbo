@@ -1,0 +1,45 @@
+{% autoescape True %}
+	<main>
+		<div class="scroll-box">
+		<!-- 予約一覧 -->
+		<table id="search_result" class="program_list striped_pattern">
+			<thead>
+				<tr>
+					<th class="_sticky">予約状況</th>
+					<th class="_sticky">サービス名</th>
+					<th class="_sticky">放送時間</th>
+					<th class="_sticky">終/新</th>
+					<th class="_sticky">番組名(保存ファイル名)</th>
+					<th class="_sticky">ジャンル</th>
+					<th class="_sticky">自動予約キーワード</th>
+				</tr>
+			</thead>
+			<tbody>
+				{#- https://qiita.com/waro_a2606/items/ae92dc26841a302ca95e (2024/01/22) #}
+				{%- set date_str = namespace(old = '') %}
+				{%- for program in program_list %}
+				{%- if date_str.old != program['放送日'] %}
+				<tr>
+					<th colspan="7" class="separater">{{program['放送日']}}</th>
+				</tr>
+				{% set date_str.old = program['放送日'] %}
+				{%- endif -%}
+				<tr id="{{program['ID']}}" class="{{program['rec_status']}}">
+					<td class="toggle_reserve">{{program['予約状況']}}</td>
+					<td>{{program['サービス名']}}</td>
+					<td>{{program['時間']}}</td>
+					<td>{{program['終新フラグ']}}</td>
+					<td class="program_name">{{program['保存ファイル名']}}</td>
+					<td>{{program['ジャンル']}}</td>
+					<td>{{program['自動予約']}}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		</div>
+		<div class="msgbox notice">
+		無効予約、録画予約していない番組を薄く表示しています。
+		</div>
+	</main>
+
+{% endautoescape %}

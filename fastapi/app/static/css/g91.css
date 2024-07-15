@@ -1,0 +1,325 @@
+/*------------------------------------*/
+/*
+mirakurun client Ganbo CSS
+*/
+/*------------------------------------*/
+/* 共通 */
+/* カスタムプロパティ */
+:root {
+/*
+	参考にしたカラーパレット
+	@link https://coolors.co/palettes/trending (2023/12/06)
+	@link https://coolors.co/palette/03045e-023e8a-0077b6-0096c7-00b4d8-48cae4-90e0ef-ade8f4-caf0f8  (2023/12/12)
+*/
+	--color-main: #03045e;				/*テキスト*/
+	--color-back: white;				/*背景*/
+	--color-program-table-back: aliceblue;	/*番組表の背景色（番組データが無い場所）*/
+	--color-border: #023e8a;			/*境界線*/
+	--color-select: white;				/*ラジオボタンテキスト：マウスで選択したとき*/
+	--color-select-back: #03045e;		/*ラジオボタン背景：マウスで選択したとき*/
+	--color-hover: white;				/*テキスト：マウスが通過したとき*/
+	--color-hover-back: #023e8a; 		/*背景：マウスが通過したとき*/
+	--color-tv-title-back: #caf0f8;		/*番組表のサービス、時間軸*/
+	--color-th-back: #90e0fe;			/*<th>の背景*/
+	--color-table-even-back: #caf0f8;	/*<tbody>偶数行の背景*/
+	--color-invalid: red;				/*エラー入力*/
+	--color-title-back: #0077b6;		/*タイトルの背景色*/
+	--color-title-flag: #03045e;		/*タイトルの左端*/
+	--color-tab-back: #ade8f4;			/*タブメニューの背景*/
+}
+/*------------------------------------*/
+body {
+	margin: 0 0 0 0.5rem;
+	padding: 0;
+	font-family: Meiryo;		/* @link https://willcloud.jp/knowhow/font-family/ (2024/02/10) */
+	color: var(--color-main);
+	background-color: var(--color-back);
+}
+
+header {
+	position: sticky;
+	top: 0;
+	left: 0;
+	z-index: 999;
+	background-color: var(--color-back);
+}
+
+main {
+	margin-top: 0;
+	margin-bottom: 1rem;
+}
+
+footer {
+	display: flex;
+	justify-content: flex-end;
+	font-size: 0.8em;
+	margin-top: 0.5rem;
+	margin-right: 1rem;
+	margin-bottom: 1rem;
+	padding-right: 1rem;
+	border-top: 2px dotted var(--color-border);
+	border-bottom: 2px dotted var(--color-border);
+}
+
+h1 {
+	padding: .1rem .2rem;
+	margin: 0;
+	color: white;
+	border-left: 10px solid var(--color-title-flag);
+	background-color: var(--color-title-back);
+	border-radius: 5px;
+}
+
+table {
+	border-collapse: collapse;
+	white-space: nowrap;
+}
+
+caption {
+	font-weight: bold;
+	font-size: large;
+	text-align: left;
+}
+
+th , td {
+	border: 1px solid var(--color-border);
+	font-size: small;
+	padding: 0.1rem 0.5rem 0.1rem 0.5rem;
+}
+
+th {
+	background-color: var(--color-th-back);
+}
+
+.striped_pattern tbody tr:nth-child(even) {
+	background-color: var(--color-table-even-back);
+}
+
+hr {
+	margin : 0.5rem;
+	height: 1px;
+	background-color: var(--color-border);
+	border: none;
+}
+
+input {
+	border-radius: 5px;
+}
+
+input[type="number"] {
+	width: 7rem;
+	text-align: right;
+	border: 1px solid var(--color-border);
+}
+
+input[type="color"] {
+	border: 1px solid var(--color-border);
+	width: 7rem;
+}
+
+input:valid {
+	border: 1px solid var(--color-border);
+}
+
+input:invalid {
+	border: 1px solid var(--color-invalid);
+}
+
+select {
+	margin: 0;
+	font-size: 0.9rem;
+	width: 10rem;
+	border-radius: 5px;
+	outline: none;
+	color: var(--color-main);
+	background-color: var(--color-back);
+	border: 1px solid var(--color-border);
+}
+/*------------------------------------*/
+/* 終了した番組は薄く表示する */
+.past_program {
+	opacity: 0.4;
+}
+/*------------------------------------*/
+/* 録画予約していないものは文字を薄く表示する */
+.not_reserved {
+	color: darkgray;
+}
+/*------------------------------------*/
+/* トップにあるメニュー */
+.nav_menu{
+ 	margin-top: 0.5rem;
+	display: flex;
+	width: fit-content;
+}
+/*------------------------------------*/
+.separater {
+	text-align: left;
+	background-color: var(--color-back);
+}
+/*------------------------------------*/
+/* 自動予約設定ダイアローグ */
+#set_keyword_dialog , #update_keyword_dialog {
+	padding: 0.5rem;
+	border: 1px solid var(--color-main);
+	border-radius: 7px;
+}
+
+#set_keyword_dialog th {
+	text-align: left;
+}
+/*------------------------------------*/
+/* 番組詳細ダイアローグ */
+#detail {
+	padding: 0.5rem;
+	width: 50rem;
+	min-width: 45rem;
+	border: 1px solid var(--color-main);
+	border-radius: 7px;
+}
+
+.detail_table {
+	width: 100%;
+	border-collapse: collapse;
+	white-space: normal;
+}
+
+#detail th {
+	text-align: left;
+}
+
+/* @link https://webfrontend.ninja/html-dialog-element/ (2023/12/17) */
+dialog::backdrop {
+	backdrop-filter: blur(1px);
+	background-color: rgba(0, 0, 200, 0.1);
+}
+
+.right_button {
+	text-align: right;
+	margin-top: 0.5rem
+}
+/*------------------------------------*/
+/* 番組表で使うARIB外字の修飾 */
+.arib_gaiji {
+	color: white;
+	background-color: #023e8a;
+	border-radius: 5px;
+	padding: 0 0.2rem 0 0.2rem;
+}
+/*------------------------------------*/
+/*
+CSS スニペット
+@link https://pote-chil.com/html-maker (2023/12/02)
+*/
+.button-036 {
+	align-items: center;
+	width: fit-content;
+	min-width: 100px;
+	white-space: nowrap;
+	padding: .1em 1em;
+	border-radius: 5px;
+	font-size: 0.8rem;
+	color: var(--color-main);
+	background-color: var(--color-back);
+	border: 1px solid var(--color-border);
+}
+
+.button-036:hover {
+	color: var(--color-hover);
+	background-color: var(--color-hover-back);
+}
+
+.button-036[disabled] {
+	color: gray;
+}
+
+.button-036[disabled]:hover {
+	color: gray;
+	background-color: var(--color-back);
+}
+
+.cliked {
+	color: var(--color-hover);
+	background-color: var(--color-select-back);
+}
+
+.text-036 {
+	align-items: center;
+	width: 10rem;
+	padding: .1em 1em;
+	font-size: 0.8rem;
+	outline: none;
+	border: 1px solid var(--color-border);
+}
+
+::placeholder {
+	color: dimgray ;
+}
+/*------------------------------------*/
+/*
+ラジオボタンのメニュー
+@link https://proengineer.internous.co.jp/content/columnfeature/6492 (2023/12/06)
+*/
+input[name="nav_day"] , input[name="nav_time"] , input[name="service_type"] {
+	display: none;		  /* ラジオボタンを非表示にする */
+}
+
+input[name="nav_day"]:checked+label , input[name="nav_time"]:checked+label , input[name="service_type"]:checked+label {
+	color: var(--color-select);
+	background-color: var(--color-select-back);
+}
+
+.radio-label {
+	text-align: center;
+	white-space: nowrap;
+	padding-left: 5px;
+	padding-right: 5px;
+	border-radius: 5px;
+	cursor: pointer;
+	font-size: 0.8rem;
+	border: 1px solid var(--color-border);
+}
+
+.radio-label:hover {
+	color: var(--color-hover);
+	background-color: var(--color-hover-back);
+}
+
+.disable_label {
+	color: gray;
+}
+
+.disable_label:hover {
+	color: gray;
+	background-color: var(--color-back);
+}
+/*------------------------------------*/
+.msgbox {
+	padding: .5rem .8rem;
+	margin: 1rem 1rem 0 0;
+	border-radius: 5px;
+	border: dotted 1px;
+}
+
+.error, .alert {
+	/*	font-weight: bold;*/
+	color: red;
+	background: #fee;
+}
+
+.warning, .caution {
+	color: orange;
+	background: lightyellow;
+}
+
+.notice, .attention {
+	color: blue;
+	background: lavender;
+	font-size:small;
+}
+
+.message {
+	color: green;
+	background: #efe;
+}
+/*------------------------------------*/

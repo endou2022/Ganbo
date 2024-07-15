@@ -1,0 +1,26 @@
+{% autoescape True %}
+	<main>
+		<!-- 週間番組表 -->
+		<!-- CSSグリッドではなく、TABLEを使っても同様のことができたかもしれない -->
+		<div class="week-programs">
+			<!-- 時間軸 -->
+			{% for i in range(6) -%}
+			<div class="time-axis" style="grid-row: {{1 + i}};">{{start_time_hour + i}}</div>
+			{% endfor -%}
+
+			<!-- 番組情報 -->
+			{%- for package in program_package_list %}
+			<div style="grid-row: {{package['grid_row']}}; grid-column: {{package['grid_column']}};">
+				{%- for program in package['program_list'] %}
+				<div id="{{program['ID']}}" class="one_program {{program['genre_class']}} {{program['past_program']}}">
+					{{program['サービス名']}}<br>
+					{{program['時間']}}<br>
+					{{program['番組名']}}
+				</div>
+				{%- endfor %}
+			</div>
+			{%- endfor %}
+		</div>
+	</main>
+
+{% endautoescape %}

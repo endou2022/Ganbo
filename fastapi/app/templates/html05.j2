@@ -1,0 +1,53 @@
+{% autoescape True %}
+	<main>
+		<div class="scroll-box">
+			<!-- 自動予約一覧画面 -->
+			<table class="automatic_reservation striped_pattern">
+				<thead>
+					<tr>
+						<th class="_sticky">No.</th>
+						<th class="_sticky">優先順位</th>
+						<th class="_sticky">有効予約</th>
+						<th class="_sticky">キーワード</th>
+						<th class="_sticky">サービスタイプ</th>
+						<th class="_sticky">サービス名</th>
+						<th class="_sticky">ジャンル</th>
+						<th class="_sticky">録画マージン(開始)</th>
+						<th class="_sticky">録画マージン(終了)</th>
+						<th class="_sticky">更新日時</th>
+					</tr>
+				</thead>
+				<tbody>
+					{%- for item in automatic_list %}
+					<tr id="{{item['automatic_id']}}">
+						<td>{{loop.index}}</td>
+						<td>{{item['優先順位']}}</td>
+						<td class="reserve_list">{{item['予約件数']}}</td>
+						<td class="keyword_edit">{{item['キーワード']}}</td>
+						<td>{{item['automatic_type']}}</td>
+						<td>{{item['サービス名']}}</td>
+						<td>{{item['ジャンル']}}</td>
+						<td>{{item['録画マージン前']}}</td>
+						<td>{{item['録画マージン後']}}</td>
+						<td>{{item['更新日']}}</td>
+					</tr>
+					{%- endfor %}
+				</tbody>
+			</table>
+		</div>
+		<div class="msgbox notice">
+		優先順位、更新日時で並び替えています。「有効予約」、「キーワード」の列で操作できます。
+		「優先順位」は番組検索の優先順位です。録画の優先順位ではありません。<br>
+		自動予約を編集すると、すべての予約を再編成します。
+		</div>
+	</main>
+
+	<aside>
+		<dialog id='update_keyword_dialog'>
+		</dialog>
+	</aside>
+	<aside>
+		<dialog id='view_reserved_dialog'>
+		</dialog>
+	</aside>
+{% endautoescape %}

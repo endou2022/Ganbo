@@ -1,0 +1,7 @@
+fastapi
+uvicorn[standard]
+jinja2
+python-multipart
+mysql-connector-python
+requests
+schedule

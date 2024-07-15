@@ -1,0 +1,83 @@
+version: '3'
+
+services:
+  fastapi:
+    build:
+      context: "./fastapi"
+      dockerfile: "Dockerfile"
+    container_name: ganbo_fastapi
+    restart: always
+    depends_on:
+      - mariadb
+# https://tech.actindi.net/2022/02/21/083000 (2024/03/24)
+#        condition: service_started
+#        condition: service_healthy
+    ports:
+      - 2595:8000			# ポート番号2595が他と重なる場合は変更してください
+# https://qiita.com/yitakura731/items/36a2ba117ccbc8792aa7 (2024/03/24)
+# user;groupはホストに合わせる
+    user: 1000:100
+    volumes:
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
+      - ./fastapi/app:/app
+      - /mnt/ts:/mnt/ts		# パーミッションはすべてのユーザーが読み書き可能とする。
+    environment:
+      - TZ=Asia/Tokyo
+      - ENVIRON
+# https://qiita.com/qualitia_cdev/items/23206b3aacb291b5ded2 (2024/04/06)
+    logging:
+      driver: json-file
+      options:
+        max-file: "1"
+        max-size: 10m
+
+  mariadb:
+    build:
+      context: ./mariadb
+      dockerfile: Dockerfile
+    container_name: ganbo_mariadb
+    restart: always
+    volumes:
+      - "./mariadb/initdb.d:/docker-entrypoint-initdb.d"
+    ports:
+      - 13306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=ganbo
+      - MYSQL_USER=ganbo
+      - MYSQL_PASSWORD=ganbo
+      - TZ=Asia/Tokyo
+# https://zenn.dev/sun_asterisk/articles/b4b17681d08018 (2024/04/04)
+#    healthcheck:
+#      test: [ "CMD", "mariadb-admin" ,"ping", "-h", "localhost" , "-u" , "root" , "-proot" ]
+#      start_period: "5s" # 立ち上がるのに、5秒かかりそう
+#      timeout: "5s"      # 応答が5秒以上かかっても許さない
+#      retries: "5"       # 5回失敗応答したら許さない
+    logging:
+      driver: json-file
+      options:
+        max-file: "1"
+        max-size: 10m
+
+  phpmyadmin:
+    build:
+      context: ./phpmyadmin
+      dockerfile: Dockerfile
+    container_name: ganbo_phpmyadmin
+    restart: always
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=mariadb
+      - PMA_USER=root
+      - PMA_PASSWORD=root
+      - TZ=Asia/Tokyo
+    depends_on:
+      - mariadb
+    ports:
+      - 4000:80
+    logging:
+      driver: json-file
+      options:
+        max-file: "1"
+        max-size: 10m

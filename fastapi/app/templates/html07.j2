@@ -1,0 +1,223 @@
+{% autoescape True %}
+	<main>
+	<!-- 設定 -->
+		<input id="tab1" type="radio" name="tab_item" checked><label class="tab_item" for="tab1">mirakurunサーバー</label>
+		<input id="tab2" type="radio" name="tab_item"><label class="tab_item" for="tab2">ジャンル別背景色</label>
+		<input id="tab3" type="radio" name="tab_item"><label class="tab_item" for="tab3">地デジサービス</label>
+		<input id="tab4" type="radio" name="tab_item"><label class="tab_item" for="tab4">ＢＳサービス</label>
+		<input id="tab5" type="radio" name="tab_item"><label class="tab_item" for="tab5">ＣＳサービス</label>
+		<input id="tab6" type="radio" name="tab_item"><label class="tab_item" for="tab6">録画標準設定</label>
+
+		<div class="tab_content" id="tab1_content">
+			<form id="set_addr_form" method="post">
+				<table>
+					<caption>mirakurunとの通信設定、情報取得</caption>
+					<tr>
+						<th>IPアドレス：ポート番号</th>
+						<!-- IPアドレスは簡易チェック。ないよりましな表現 -->
+						<td><input type="text" id="ip_addr" name="ip_addr" class="text-036" style="width: 7rem;" pattern="\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}" placeholder="192.168.11.75" value="{{std_data['IPアドレス']}}" required>：
+							<input type="number" id="port" name="port" style="width: 5rem;" placeholder="40772" min="1025" value="{{std_data['ポート番号']}}" required>
+						</td>
+					</tr>
+				</table>
+				<div class="right_button">
+					<input type="reset" class="button-036" value="元に戻す">
+					<input type="button" id="test_addr" class="button-036" value="通信テスト" style="margin-left: 0.2rem">
+					<input type="button" id="set_addr"  class="button-036" value="決定" style="margin-left: 0.2rem">
+				</div>
+			</form>
+			<div id="server_result"></div>
+			<div class="msgbox notice">
+			IPアドレスに"localhost"は不可。<br>
+			「決定」すると、サービスの情報が初期化されます。
+			</div>
+		</div>
+
+		<div class="tab_content" id="tab2_content">
+			<form id="color_setting_form">
+				<table class="color_setting_form">
+					<caption>番組表の背景色設定</caption>
+				{%- for genre in genres %}
+					<tr>
+						<th>{{genre['ジャンル']}}</th>
+						<td><input type="color" name="colors" value="{{genre['色']}}"></td>
+					</tr>
+				{%- endfor %}
+				</table>
+				<div class="right_button" style="margin-bottom: 0.2rem;">
+					<input type="reset" class="button-036" value="元に戻す">
+					<input type="button" id="color_setting" class="button-036" value="決定">
+				</div>
+				<div class="msgbox notice">
+					初期値は「白色」です。興味のあるジャンルに色を付けます。<br>
+					ブラウザのキャッシュを削除しないと設定が反映されないことがあります。
+				</div>
+			</form>
+		</div>
+
+		<div class="tab_content" id="tab3_content">
+			<form id="gr_setting_form">
+				<table class="striped_pattern">
+					<caption>番組表に表示するサービスと並び順の設定</caption>
+					<thead>
+						<tr>
+							<th>有効</th>
+							<th>表示順</th>
+							<th>チャンネル</th>
+							<th>サービスID</th>
+							<th>サービス名</th>
+						</tr>
+					</thead>
+					<!-- https://hipuri.hatenadiary.org/entry/20080929/1222689735 (2023/12/26)  PHPの場合 -->
+					<tbody>
+						{%- for gr_service in gr_services %}
+						<tr>
+							<td><input type="checkbox" name="valid_list" value="{{gr_service['サービスID']}}" {{gr_service['有効']}}></td>
+							<td><input type="number" name="sort_list" min="0" style="width: 3rem" value="{{gr_service['表示順']}}"></td>
+							<td>{{gr_service['チャンネル']}}</td>
+							<td>{{gr_service['サービスID']}} <input type="hidden" name="service_id_list" value="{{gr_service['サービスID']}}"></td>
+							<td>{{gr_service['サービス名']}}</td>
+						</tr>
+						{%- endfor %}
+					</tbody>
+				</table>
+				<div class="right_button">
+					<input type="hidden" name="service_type" value="GR">
+					<input type="reset" class="button-036" value="元に戻す">
+					<input type="button" id="gr_setting" class="button-036" value="決定">
+				</div>
+				<div class="msgbox notice">
+				`有効` , `表示順` , `チャンネル` , `サービス名`で並び替えて出力します。<br>
+				有効にしたサービスのみ、番組情報を取得し表示します。
+				</div>
+			</form>
+		</div>
+
+		<div class="tab_content" id="tab4_content">
+			<form id="bs_setting_form">
+				<table class="striped_pattern">
+					<caption>番組表に表示するサービスと並び順の設定</caption>
+					<thead>
+						<tr>
+							<th>有効</th>
+							<th>表示順</th>
+							<th>チャンネル</th>
+							<th>サービスID</th>
+							<th>サービス名</th>
+						</tr>
+					</thead>
+					<tbody>
+						{%- for bs_service in bs_services %}
+						<tr>
+							<td><input type="checkbox" name="valid_list" value="{{bs_service['サービスID']}}" {{bs_service['有効']}}></td>
+							<td><input type="number" name="sort_list" min="0" style="width: 3rem" value="{{bs_service['表示順']}}"></td>
+							<td>{{bs_service['チャンネル']}}</td>
+							<td>{{bs_service['サービスID']}} <input type="hidden" name="service_id_list" value="{{bs_service['サービスID']}}"></td>
+							<td>{{bs_service['サービス名']}}</td>
+						</tr>
+						{%- endfor %}
+					</tbody>
+				</table>
+				<div class="right_button">
+					<input type="hidden" name="service_type" value="BS">
+					<input type="reset" class="button-036" value="元に戻す">
+					<input type="button" id="bs_setting" class="button-036" value="決定">
+				</div>
+				<div class="msgbox notice">
+				`有効` , `表示順` , `チャンネル` , `サービス名`で並び替えて出力します。<br>
+				有効にしたサービスのみ、番組情報を取得し表示します。
+				</div>
+			</form>
+		</div>
+
+		<div class="tab_content" id="tab5_content">
+			<form id="cs_setting_form">
+				<table class="striped_pattern">
+					<caption>番組表に表示するサービスと並び順の設定</caption>
+					<thead>
+						<tr>
+							<th>有効</th>
+							<th>表示順</th>
+							<th>チャンネル</th>
+							<th>サービスID</th>
+							<th>サービス名</th>
+						</tr>
+					</thead>
+					<tbody>
+						{%- for cs_service in cs_services %}
+						<tr>
+							<td><input type="checkbox" name="valid_list" value="{{cs_service['サービスID']}}" {{cs_service['有効']}}></td>
+							<td><input type="number" name="sort_list" min="0" style="width: 3rem" value="{{cs_service['表示順']}}"></td>
+							<td>{{cs_service['チャンネル']}}</td>
+							<td>{{cs_service['サービスID']}} <input type="hidden" name="service_id_list" value="{{cs_service['サービスID']}}"></td>
+							<td>{{cs_service['サービス名']}}</td>
+						</tr>
+						{%- endfor %}
+					</tbody>
+				</table>
+				<div class="right_button">
+					<input type="hidden" name="service_type" value="CS">
+					<input type="reset" class="button-036" value="元に戻す">
+					<input type="button" id="cs_setting" class="button-036" value="決定">
+				</div>
+				<div class="msgbox notice">
+				`有効` , `表示順` , `チャンネル` , `サービス名`で並び替えて出力します。<br>
+				有効にしたサービスのみ、番組情報を取得し表示します。
+				</div>
+			</form>
+		</div>
+
+		<div class="tab_content" id="tab6_content">
+			<form id="std_setting_form">
+				<table class="std_setting_form">
+					<caption>標準設定</caption>
+					<tr>
+						<th>番組情報更新時刻</th>
+						<td><input type="time" name="reflesh_time" class="button-036" title="番組情報を更新し、すべての予約を再構築します。" value="{{std_data['番組情報更新時刻']}}">
+							<span style="width: 0.5rem">&nbsp;</span>
+							<input type="button" id="reflesh_programs" class="button-036" title="すべての予約を再構築します。" value="番組情報即更新" ></td>
+					</tr>
+					<tr>
+						<th>自動予約優先順位</th>
+						<td><input type="number" name="priority" min=0 value="{{std_data['優先順位']}}" placeholder="50" required></td>
+					</tr>
+					<tr>
+						<th>録画マージン</th>
+						<td>開始<input type="number" name="margin_before" value="{{std_data['録画マージン前']}}" title="25秒を推奨" placeholder="25" required>秒前</td>
+					</tr>
+					<tr>
+						<th>録画マージン</th>
+						<td>終了<input type="number" name="margin_after" value="{{std_data['録画マージン後']}}" title="-30秒を推奨。NHKの場合は+20秒を推奨" placeholder="-30" required>秒後</td>
+					</tr>
+					<tr>
+						<th>保存ルート</th>
+						<td><input type="text" name="save_file_root" class="text-036" style="width: 17rem;" value="{{std_data['保存ルート']}}" title="compose.ymlに合わせる必要があります" placeholder="/mnt/ts" required></td>
+					</tr>
+					<tr>
+						<th>保存ファイル名(マクロ)</th>
+						<td><input type="text" name="save_file_macro" class="text-036" style="width: 17rem;" value="{{std_data['保存ファイル名マクロ']}}" placeholder="($ServiceName$)$TitleH$.ts" required></td>
+					</tr>
+				</table>
+				<div class="right_button">
+					<input type="reset" class="button-036" value="元に戻す">
+					<input type="button" id="std_setting" class="button-036" value="決定">
+				</div>
+			</form>
+			<div class="msgbox notice">
+				<ul>
+					<li>録画マージンは、開始 +25 秒前、終了 -30 秒後を推奨します。<br>
+					NHK、映画は終了時刻まで放送されることがありますので個別に、終了を+20秒程度に設定してください。
+					<li>保存ルートは compose.yml に合わせて、docker 内部のディレクトリを指定してください。<br>
+						末尾に / を付けてはいけません。
+					<li>保存ファイル名のマクロは、<br>
+						$Title$ : 番組名<br>
+						$date$ : 放送日(%Y-%m-%d)<br>
+						$time$ : 開始時刻(%H%M%S)<br>
+						$datetime$ : 放送日時(%Y-%m-%d %H%M%S)<br>
+						$ServiceName$ : サービス名<br>
+						のみです。
+				</ul>
+			</div>
+		</div>
+	</main>
+{% endautoescape %}
