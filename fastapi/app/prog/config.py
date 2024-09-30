@@ -18,7 +18,9 @@ database = {"host" : 'mariadb' ,	# データベースのアドレス dockerな�
 			"user" : 'ganbo' ,
 			"password" : 'ganbo' ,
 			"database" : 'ganbo',
-			"sql_mode" : 'ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'}
+			"sql_mode" : 'ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' ,
+			"charset" : 'utf8mb4' ,	# mysql.connector-python のバージョンが 9.0.0 になってから、キャラクターセットと照合順を指定する必要がある
+			"collation" : 'utf8mb4_unicode_ci'}
 #---------------------------------------------------------------------------
 # 共通変数
 # import config と読み込んで
