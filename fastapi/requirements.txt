@@ -1,7 +1,7 @@
-fastapi
-uvicorn[standard]
-jinja2
-python-multipart
-mysql-connector-python
-requests
-schedule
+fastapi == 0.115.4
+uvicorn[standard] == 0.32.0
+Jinja2 == 3.1.4
+python-multipart == 0.0.17
+mysql-connector-python == 9.1.0
+requests == 2.32.3
+schedule == 1.2.2

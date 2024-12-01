@@ -1,4 +1,6 @@
-FROM nikolaik/python-nodejs:python3.12-nodejs21-bullseye
+FROM  nikolaik/python-nodejs:python3.12-nodejs23-bullseye
+# Python ver.3.12.7 , pip ver. 24.2 , Node.js ver.23.1.0 , npm ver.10.9.0
+#FROM nikolaik/python-nodejs:python3.12-nodejs21-bullseye
 # Debianにpythonとnode.js(npm)をインストールしたイメージを使う
 
 WORKDIR /app
