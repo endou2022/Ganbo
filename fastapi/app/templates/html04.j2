@@ -1,115 +1,108 @@
-{% autoescape True %}
-	<main>
-		<!-- 番組検索 -->
-		<!-- 文字の照合順序を utf8mb4_unicode_ci にしているために、関係のない番組が検索されることがある
-		ex.	キーワードを「ドイツ」とすると、「おかあさんといっしょ」も検索される -->
-		<form id="search_form">
-			<table style="margin-bottom: 0.5rem;">
-				<tr>
-					<th>キーワード</th>
-					<th>サービスタイプ</th>
-					<th>サービス</th>
-					<th>ジャンル</th>
-					<th></th>
-				</tr>
-				<tr>
-					<td> <input type="text" id="keyword" name="keyword" value="" title="番組名を部分一致で検索します" style="width: 10rem" required> </td>
-					<td><select id="service_type_ajax" name="service_type">
-							<option value="NO"></option>
-							<option value="GR">地デジ</option>
-							<option value="BS">ＢＳ</option>
-							<option value="CS">ＣＳ</option>
-						</select>
-					</td>
-					<td>
-						<select id="service_id_ajax" name="service_id">
-							<option value="0"></option>
-						</select>
-					</td>
-					<td> <select id="genre_static" name="genre">
-							<option value="99"></option>
-							<option value="0">ニュース／報道</option>
-							<option value="1">スポーツ</option>
-							<option value="2">情報／ワイドショー</option>
-							<option value="3">ドラマ</option>
-							<option value="4">音楽</option>
-							<option value="5">バラエティ</option>
-							<option value="6">映画</option>
-							<option value="7">アニメ／特撮</option>
-							<option value="8">ドキュメンタリー／教養</option>
-							<option value="9">劇場／公演</option>
-							<option value="10">趣味／教育</option>
-							<option value="11">福祉</option>
-							<option value="12">(予備)</option>
-							<option value="13">(予備)</option>
-							<option value="14">拡張</option>
-							<option value="15">その他</option>
-						</select>
-					</td>
-					<td >
-						<input type="button" id="search_prog" class="button-036" value="検索" title="番組名について、部分一致で検索します">
-						<input type="button" id="open_keyword_dialog" class="button-036" value="自動予約登録" title="検索条件に基本設定を加えて登録します">
-					</td>
-				</tr>
-			</table>
-		</form>
 
-		<div id="search_result">
-		</div>
-		<div class="msgbox notice">
-		番組名について、大文字・小文字、全角・半角、ひらがな・カタカナを区別せずに検索します。
-		<span title="「ドイツ」で検索してみてください。照合順序を utf8mb4_unicode_ci にしている副作用です。">まれに、関係のない番組が検索されることがあります。</span><br>
-		無効予約、録画予約していない番組を薄く表示しています。自動予約登録すると、すべての予約を再編成します。
-		</div>
-	</main>
+    <main>
+        <!-- 番組検索 -->
+        <!-- 文字の照合順序を utf8mb4_unicode_ci にしているために、関係のない番組が検索されることがある
+        ex.    キーワードを「ドイツ」とすると、「おかあさんといっしょ」も検索される -->
+        <form id="search_form">
+            <table style="margin-bottom: 0.5rem;">
+                <tr>
+                    <th>キーワード</th>
+                    <th>サービスタイプ</th>
+                    <th>サービス</th>
+                    <th>ジャンル</th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td> <input type="text" id="keyword" name="keyword" value="" title="番組名を部分一致で検索します" style="width: 10rem" required> </td>
+                    <td><select id="service_type_ajax" name="service_type">
+                            <option value="NO"></option>
+                            <option value="GR">地デジ</option>
+                            <option value="BS">ＢＳ</option>
+                            <option value="CS">ＣＳ</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select id="service_id_ajax" name="service_id">
+                            <option value="0"></option>
+                        </select>
+                    </td>
+                    <td> <select id="genre_static" name="genre">
+                            <option value="99"></option>
+                            <option value="0">ニュース／報道</option>
+                            <option value="1">スポーツ</option>
+                            <option value="2">情報／ワイドショー</option>
+                            <option value="3">ドラマ</option>
+                            <option value="4">音楽</option>
+                            <option value="5">バラエティ</option>
+                            <option value="6">映画</option>
+                            <option value="7">アニメ／特撮</option>
+                            <option value="8">ドキュメンタリー／教養</option>
+                            <option value="9">劇場／公演</option>
+                            <option value="10">趣味／教育</option>
+                            <option value="11">福祉</option>
+                            <option value="12">(予備)</option>
+                            <option value="13">(予備)</option>
+                            <option value="14">拡張</option>
+                            <option value="15">その他</option>
+                        </select>
+                    </td>
+                    <td >
+                        <input type="button" id="search_prog" class="button-036" value="検索" title="番組名について、部分一致で検索します">
+                        <input type="button" id="open_keyword_dialog" class="button-036" value="自動予約登録" title="検索条件に基本設定を加えて登録します">
+                    </td>
+                </tr>
+            </table>
+        </form>
 
-	<aside>
-	<!-- 自動予約設定ダイアローグ -->
-		<dialog id='set_keyword_dialog'>
-			<form id="confirm_keyword" method="dialog">
-				<table>
-					<caption>自動予約設定</caption>
-					<tr>
-						<th colspan="2" class="separater">検索条件</th>
-					</tr>
-					<tr>
-						<th>キーワード</th>
-						<td id="dlog_keyword"> </td>
-					</tr>
-					<tr>
-						<th>サービスタイプ</th>
-						<td id="dlog_service_type"></td>
-					</tr>
-					<tr>
-						<th>サービス</th>
-						<td id="dlog_service"></td>
-					</tr>
-					<tr>
-						<th>ジャンル</th>
-						<td id="dlog_genre"></td>
-					</tr>
-					<tr>
-						<th colspan="2" class="separater">録画基本設定</th>
-					</tr>
-					<tr>
-						<th>優先順位</th>
-						<td><input type="number" id="priority" name="priority" min=0 value="{{search_param['優先順位']}}" required title="番組検索の優先順位です。録画の優先順位ではありません。"></td>
-					</tr>
-					<tr>
-						<th>録画マージン</th>
-						<td>開始 <input type="number" id="margin_before" name="margin_before" value="{{search_param['録画マージン前']}}" required>秒前</td>
-					</tr>
-					<tr>
-						<th>録画マージン</th>
-						<td>終了 <input type="number" id="margin_after" name="margin_after" value="{{search_param['録画マージン後']}}" required>秒後</td>
-					</tr>
-				</table>
-				<div class="right_button">
-					<input type="submit" id="set_keyword" class="button-036" value="自動予約登録">
-					<input type="button" class="button-036" value="閉じる" onclick="$('#set_keyword_dialog')[0].close('閉じる')" autofocus>
-				</div>
-			</form>
-		</dialog>
-	</aside>
+        <div id="search_result"></div>
+        <div class="msgbox notice">
+        番組名について、大文字・小文字、全角・半角、ひらがな・カタカナを区別せずに検索します。
+        <span title="「ドイツ」で検索してみてください。照合順序を utf8mb4_unicode_ci にしている副作用です。">まれに、関係のない番組が検索されることがあります。</span><br>
+        無効予約、録画予約していない番組を薄く表示しています。
+        </div>
+    </main>
 
-{% endautoescape %}
+    <aside>
+    <!-- 自動予約設定ダイアローグ -->
+        <dialog id='set_keyword_dialog'>
+            <form id="confirm_keyword" method="dialog">
+                <table>
+                    <caption>自動予約設定</caption>
+                    <tr>
+                        <th colspan="2" class="separater">検索条件</th>
+                    </tr>
+                    <tr>
+                        <th>キーワード</th>
+                        <td id="dlog_keyword"> </td>
+                    </tr>
+                    <tr>
+                        <th>サービスタイプ</th>
+                        <td id="dlog_service_type"></td>
+                    </tr>
+                    <tr>
+                        <th>サービス</th>
+                        <td id="dlog_service"></td>
+                    </tr>
+                    <tr>
+                        <th>ジャンル</th>
+                        <td id="dlog_genre"></td>
+                    </tr>
+                    <tr>
+                        <th colspan="2" class="separater">録画基本設定</th>
+                    </tr>
+                    <tr>
+                        <th>録画マージン</th>
+                        <td>開始 <input type="number" id="margin_before" name="margin_before" value="{{search_param['録画マージン前']}}" title="25秒を推奨"                   required>秒前</td>
+                    </tr>
+                    <tr>
+                        <th>録画マージン</th>
+                        <td>終了 <input type="number" id="margin_after"  name="margin_after"  value="{{search_param['録画マージン後']}}" title="NHK、映画の場合は+30秒を推奨" required>秒後</td>
+                    </tr>
+                </table>
+                <div class="right_button">
+                    <input type="submit" id="set_keyword" class="button-036" value="自動予約登録">
+                    <input type="button" class="button-036" value="閉じる" onclick="$('#set_keyword_dialog')[0].close('閉じる')" autofocus>
+                </div>
+            </form>
+        </dialog>
+    </aside>

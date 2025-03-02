@@ -1,0 +1,36 @@
+        <div class="tab_content" id="{{id_tab}}">
+            <form id="{{id_form}}">
+                <table class="striped_pattern">
+                    <caption>番組表に表示するサービスと並び順の設定</caption>
+                    <thead>
+                        <tr>
+                            <th>有効</th>
+                            <th>表示順</th>
+                            <th>チャンネル</th>
+                            <th>サービスID</th>
+                            <th>サービス名</th>
+                        </tr>
+                    </thead>
+                    <tbody id="{{btn_id}}_table">
+                        {%- for service in services %}
+                        <tr>
+                            <td><input type="checkbox" name="valid_list" value="{{service['サービスID']}}" {{service['有効']}}></td>
+                            <td><input type="number"   name="sort_list" min="0" style="width: 3rem" value="{{service['表示順']}}"></td>
+                            <td>{{service['チャンネル']}}</td>
+                            <td>{{service['サービスID']}} <input type="hidden" name="service_id_list" value="{{service['サービスID']}}"></td>
+                            <td>{{service['サービス名']}}</td>
+                        </tr>
+                        {%- endfor %}
+                    </tbody>
+                </table>
+                <div class="right_button">
+                    <input type="hidden" name="service_type" value="{{service_type}}">
+                    <input type="reset" class="button-036" value="元に戻す">
+                    <input type="button" id="{{btn_id}}" class="button-036" value="決定">
+                </div>
+                <div class="msgbox notice">
+                `有効` , `表示順` , `チャンネル` , `サービス名`で並び替えて出力します。<br>
+                有効にしたサービスのみ、番組情報を取得し表示します。
+                </div>
+            </form>
+        </div>

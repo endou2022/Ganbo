@@ -1,60 +1,59 @@
-{% autoescape True %}
 <form id="detail_form" method="dialog">
-	<!-- 詳細 -->
-	<table class="detail_table">
-		<tr>
-			<th>番組 ID</th>
-			<td><input type="hidden" id="program_id" name="program_id" value="{{detail['ProgID']}}"> {{detail['ProgID']}}</td>
-		</tr>
-		<tr>
-			<th style="width: 7rem;">番組名</th>
-			<td id="detail_prog_name">{{detail['番組名']}}</td>
-		</tr>
-		<tr>
-			<th>放送時間</th>
-			<td>{{detail['放送日時']}}</td>
-		</tr>
-		<tr>
-			<th>サービス名</th>
-			<td>{{detail['サービス名']}}</td>
-		</tr>
-		<tr>
-			<th>説明</th>
-			<td id="detail_exp">{{detail['説明']}}</td>
-		</tr>
-		<tr>
-			<th>ジャンル</th>
-			<td>{{detail['ジャンル']}}</td>
-		</tr>
-		<tr>
-			<th>その他の情報</th>
-			<td id="detail_ext">{{detail['拡張情報']}}</td>
-		</tr>
-		<tr>
-			<th>録画予約</th>
-			<td>{{detail['録画予約']}} {{detail['自動予約キーワード']}}</td>
-		</tr>
-		<tr>
-			<th>録画マージン</th>
-			<td>開始<input type="number" name="margin_before" value="{{detail['margin_before']}}" required>秒前　
-				終了<input type="number" name="margin_after"  value="{{detail['margin_after']}}" required>秒後</td>
-		</tr>
-		<tr>
-			<th>保存ファイル名</th>
-			<td><input type="text" name="save_file_name" class="text-036" style="width: 30rem" value="{{detail['保存ファイル名']}}" required><br>
-			</td>
-		</tr>
-	</table>
-	<div class="right_button">
-		<input type="submit" class="button-036" style="display: {{detail['ボタン']['中止']}};" value="録画中止">
-		<input type="submit" class="button-036" style="display: {{detail['ボタン']['録画']}};" value="録画開始">
-		<input type="submit" class="button-036" style="display: {{detail['ボタン']['変更']}};" value="予約変更">
-		<input type="submit" class="button-036" style="display: {{detail['ボタン']['予約']}};" value="録画予約">
-		<input type="submit" class="button-036" style="display: {{detail['ボタン']['有効']}};" value="予約有効">
-		<input type="submit" class="button-036" style="display: {{detail['ボタン']['削除']}};" value="予約削除">
-		<input type="submit" class="button-036" style="display: {{detail['ボタン']['無効']}};" value="予約無効">
-		<input type="button" class="button-036" value="閉じる" onclick="$('#detail')[0].close('閉じる')" autofocus>
-		<input type="hidden" id="dialog_result" name="returnValue" value="">
-	</div>
+
+    <!-- 詳細 -->
+    <table class="detail_table">
+        <tr>
+            <th>番組 ID</th>
+            <td><input type="hidden" id="program_id" name="program_id" value="{{detail['ProgID']}}"> {{detail['ProgID']}}</td>
+        </tr>
+        <tr>
+            <th style="width: 7rem;">番組名</th>
+            <td id="detail_prog_name">{{detail['番組名']}}</td>
+        </tr>
+        <tr>
+            <th>放送時間</th>
+            <td>{{detail['放送日時']}}</td>
+        </tr>
+        <tr>
+            <th>サービス名</th>
+            <td>{{detail['サービス名']}}</td>
+        </tr>
+        <tr>
+            <th>説明</th>
+            <td id="detail_exp">{{detail['説明']}}</td>
+        </tr>
+        <tr>
+            <th>ジャンル</th>
+            <td>{{detail['ジャンル']}}</td>
+        </tr>
+        <tr>
+            <th>その他の情報</th>
+            <td id="detail_ext">{{detail['拡張情報']}}</td>
+        </tr>
+        <tr>
+            <th>録画予約</th>
+            <td>{{detail['録画予約']}} {{detail['自動予約キーワード']}}</td>
+        </tr>
+        <tr>
+            <th>録画マージン</th>
+            <td>開始<input type="number" name="margin_before" value="{{detail['margin_before']}}" title="25秒を推奨"                   required>秒前&ensp;
+                終了<input type="number" name="margin_after"  value="{{detail['margin_after']}}"  title="NHK、映画の場合は+30秒を推奨" required>秒後</td>
+        </tr>
+        <tr>
+            <th>保存ファイル名</th>
+            <td><input type="text" name="save_file_name" class="text-036" style="width: 30rem" value="{{detail['保存ファイル名']}}" required><br>
+            </td>
+        </tr>
+    </table>
+    <div class="right_button">
+        <input type="submit" class="button-036" style="display: {{detail['ボタン']['中止']}};" value="録画中止">
+        <input type="submit" class="button-036" style="display: {{detail['ボタン']['録画']}};" value="録画開始">
+        <input type="submit" class="button-036" style="display: {{detail['ボタン']['変更']}};" value="予約変更">
+        <input type="submit" class="button-036" style="display: {{detail['ボタン']['予約']}};" value="録画予約">
+        <input type="submit" class="button-036" style="display: {{detail['ボタン']['有効']}};" value="予約有効">
+        <input type="submit" class="button-036" style="display: {{detail['ボタン']['削除']}};" value="予約削除">
+        <input type="submit" class="button-036" style="display: {{detail['ボタン']['無効']}};" value="予約無効">
+        <input type="button" class="button-036" value="閉じる" onclick="$('#detail')[0].close('閉じる')" autofocus>
+        <input type="hidden" id="dialog_result" name="returnValue" value="">
+    </div>
 </form>
-{% endautoescape %}

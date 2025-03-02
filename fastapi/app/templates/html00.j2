@@ -1,21 +1,21 @@
-{% autoescape True %}
-	<main>
-		<!-- 番組表 -->
-		<div class="tv-programs">
-			<!-- 時間軸 -->
-			{% for i in range(6) -%}
-			<div class="time-axis" style="grid-row: {{1 + i * 60}}  / span 60;">{{start_time_hour + i}}</div>
-			{% endfor -%}
 
-			<!-- 番組情報 -->
-			{% for program in program_list -%}
-			<div id="{{program['ID']}}" class="content-area {{program['genre_class']}} {{program['past_program']}}" style="grid-row: {{program['grid_row']}} / span {{program['span']}}; grid-column: {{program['grid_column']}};">
-				<div class="content-time">{{program['時間']}}</div>
-				<div class="content-title">{{program['番組名']}}</div>
-				<div class="content-discription">{{program['説明']}}</div>
-			</div>
-			{% endfor %}
-		</div>
-	</main>
+    <main>
+        <!-- 番組表 -->
+        <div class="tv-programs">
+            <!-- 時間軸 -->
+            {% for i in range(6) -%}
+            <div class="time-axis" style="grid-row: {{1 + i * 60}}  / span 60;">{{start_time_hour + i}}</div>
+            {% endfor -%}
 
-{% endautoescape %}
+            <!-- 番組情報 -->
+            {% for program in program_list -%}
+            <div id="{{program['ID']}}" class="content-area {{program['genre_class']}} {{program['past_program']}}" style="grid-row: {{program['grid_row']}} / span {{program['span']}}; grid-column: {{program['grid_column']}};">
+                <div class="content-time">{{program['時間']}}</div>
+                <div class="content-title">{{program['番組名']}}</div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="msgbox notice">
+            番組欄をクリックすると番組の情報が出ます。
+        </div>
+    </main>

@@ -1,19 +1,18 @@
-{% autoescape True %}
-	<!-- mirakurunのバージョンとチューナー情報 -->
-	<table style="margin-top: 0.5rem;">
-		<caption>mirakurun 通信テスト結果</caption>
-		<tr><th>mirakurun バージョン</th><td>{{m_ver}}</td></tr>
-	</table>
 
-	<table>
-		<caption>チューナー情報</caption>
-		<thead>
-			<tr><th>番号</th><th>名前</th><th>タイプ</th></tr>
-		</thead>
-		<tbody>
-		{% for tuner in tuners %}
-			<tr><td>{{tuner['index']}}</td><td>{{tuner['name']}}</td><td>{{tuner['types']}}</td></tr>
-		{% endfor %}
-		</tbody>
-	</table>
-{% endautoescape %}
+    <!-- mirakurunのバージョンとチューナー情報 -->
+    <table style="margin-top: 0.5rem;">
+        <caption>mirakurun 通信テスト結果</caption>
+        <tr><th>mirakurun バージョン</th><td>{{m_ver}}</td></tr>
+    </table>
+
+    <table>
+        <caption>チューナー情報</caption>
+        <thead>
+            <tr><th>番号</th><th>名前</th><th>タイプ</th></tr>
+        </thead>
+        <tbody>
+        {%- for tuner in tuners %}
+            <tr><td>{{tuner['index']}}</td><td>{{tuner['name']}}</td><td>{{tuner['types']}}</td></tr>
+        {%- endfor %}
+        </tbody>
+    </table>

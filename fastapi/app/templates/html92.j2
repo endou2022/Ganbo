@@ -1,78 +1,77 @@
-{% autoescape True %}
+
 <body>
-	<!-- ヘッダーメニュー -->
-	{%- if service_list or days_strs_j %}
-	<header style="padding-bottom:0;border-bottom:0;">
-	{%- else %}
-	<header>
-	{%- endif %}
-		<h1>{{page_title}}</h1>
-		<nav>
-			<form id="nav_menu_form" method="post">
-				<!-- ナビゲーションメニュー -->
-				<div class="nav_menu">
-					<input type="submit" class="button-036 {{btn_menu[0]}}" value="番組表"        formaction="/daily">
-					<input type="submit" class="button-036 {{btn_menu[1]}}" value="週間番組表"    formaction="/weekly">
-					<input type="submit" class="button-036 {{btn_menu[2]}}" value="終了・新番組"  formaction="/new_final_list">
-					<input type="submit" class="button-036 {{btn_menu[3]}}" value="予約一覧"      formaction="/reserved_list">
-					<input type="submit" class="button-036 {{btn_menu[4]}}" value="番組検索"      formaction="/program_search">
-					<input type="submit" class="button-036 {{btn_menu[5]}}" value="自動予約一覧"  formaction="/automatic_list">
-					<input type="submit" class="button-036 {{btn_menu[6]}}" value="設定"          formaction="/set_ganbo">
-				</div>
+    <!-- ヘッダーメニュー -->
+    {%- if service_list or days_strs_j %}
+    <header style="padding-bottom:0;border-bottom:0;">
+    {%- else %}
+    <header>
+    {%- endif %}
+        <h1>{{page_title}}</h1>
+        <nav>
+            <form id="nav_menu_form" method="post">
+                <!-- ナビゲーションメニュー -->
+                <div class="nav_menu">
+                    <input type="submit" class="button-036 {{btn_menu[0]}}" value="番組表"        formaction="/daily">
+                    <input type="submit" class="button-036 {{btn_menu[1]}}" value="週間番組表"    formaction="/weekly">
+                    <input type="submit" class="button-036 {{btn_menu[2]}}" value="終了・新番組"  formaction="/new_final_list">
+                    <input type="submit" class="button-036 {{btn_menu[3]}}" value="予約一覧"      formaction="/reserved_list">
+                    <input type="submit" class="button-036 {{btn_menu[4]}}" value="番組検索"      formaction="/program_search">
+                    <input type="submit" class="button-036 {{btn_menu[5]}}" value="自動予約一覧"  formaction="/automatic_list">
+                    <input type="submit" class="button-036 {{btn_menu[6]}}" value="設定"          formaction="/set_ganbo">
+                </div>
 
-				{%- if service_flag %}
-				<!-- サービス -->
-				<div class="nav_menu">
-					<input type="radio" id="service_type_GR" name="service_type" value="GR" {{service_type_check['GR']}}> <label for="service_type_GR" class="radio-label" style="width:4rem;">地デジ</label>
-					<input type="radio" id="service_type_BS" name="service_type" value="BS" {{service_type_check['BS']}}> <label for="service_type_BS" class="radio-label" style="width:4rem;">ＢＳ</label>
-					<input type="radio" id="service_type_CS" name="service_type" value="CS" {{service_type_check['CS']}}> <label for="service_type_CS" class="radio-label" style="width:4rem;">ＣＳ</label>
-					<span style="width: 0.5rem">&nbsp;</span>
+                {%- if service_flag %}
+                <!-- サービス -->
+                <div class="nav_menu">
+                    <input type="radio" id="service_type_GR" name="service_type" value="GR" {{service_type_check['GR']}}> <label for="service_type_GR" class="radio-label" style="width:4rem;">地デジ</label>
+                    <input type="radio" id="service_type_BS" name="service_type" value="BS" {{service_type_check['BS']}}> <label for="service_type_BS" class="radio-label" style="width:4rem;">ＢＳ</label>
+                    <input type="radio" id="service_type_CS" name="service_type" value="CS" {{service_type_check['CS']}}> <label for="service_type_CS" class="radio-label" style="width:4rem;">ＣＳ</label>
+                    <span style="width: 0.5rem">&nbsp;</span>
 
-					<select id="service_id" name="service_id">
-					{%- for opt in option_service_id %}
-						<option value="{{opt['サービスID']}}" {{opt['selected']}}>{{opt['サービス名']}}</option>
-					{%- endfor %}
-					</select>
-					<span style="width: 0.5rem">&nbsp;</span>
+                    <select id="service_id" name="service_id">
+                    {%- for opt in option_service_id %}
+                        <option value="{{opt['サービスID']}}" {{opt['selected']}}>{{opt['サービス名']}}</option>
+                    {%- endfor %}
+                    </select>
+                    <span style="width: 0.5rem">&nbsp;</span>
 
-					<select id="genre" name="genre">
-					{%- for opt in option_genre %}
-						<option value="{{opt['ジャンル番号']}}" {{opt['selected']}}>{{opt['ジャンル']}}</option>
-					{%- endfor %}
-					</select>
-				</div>
+                    <select id="genre" name="genre">
+                    {%- for opt in option_genre %}
+                        <option value="{{opt['ジャンル番号']}}" {{opt['selected']}}>{{opt['ジャンル']}}</option>
+                    {%- endfor %}
+                    </select>
+                </div>
 
-				<!-- 日、時間帯メニュー -->
-				<div class="nav_menu">
-				{%- for radio_btn in nav_days_btn %}
-					<input type="radio" id="nav_day{{loop.index0}}" name="nav_day" value="{{radio_btn['Ymd']}}" {{radio_btn['checked']}}> <label for="nav_day{{loop.index0}}" class="radio-label">{{radio_btn['ja']}}</label>
-				{%- endfor %}
-					<span style="width: 0.5rem">&nbsp;</span>
-				{%- for radio_btn in nav_times_btn %}
-					<input type="radio" id="nav_time{{loop.index0}}" name="nav_time" value="{{radio_btn['value']}}" {{radio_btn['checked']}}> <label for="nav_time{{loop.index0}}" class="radio-label">{{radio_btn['label']}}時～</label>
-				{%- endfor %}
-				</div>
-				{%- endif %}
-			</form>
-		</nav>
-		<hr>
-		{#- 番組表のサービス名。<header></header> に記述してスクロールしないようにする #}
-		{%- if service_list %}
-		<div class="tv-programs-header">
-			<!-- サービス名 -->
-			{% for service_name in service_list -%}
-			<div class="service" style="grid-column: {{2 + loop.index0}};">{{service_name}}</div>
-			{% endfor -%}
-		</div>
-		{%- endif %}
-		{#- 週間番組表の日付 #}
-		{%- if days_strs_j %}
-		<div class="week-programs-header">
-			<!-- 日付 -->
-			{% for i in range(7) -%}
-			<div class="week-days" style="grid-column: {{2 + i}};">{{days_strs_j[i]}}</div>
-			{% endfor -%}
-		</div>
-		{%- endif %}
-	</header>
-{% endautoescape %}
+                <!-- 日、時間帯メニュー -->
+                <div class="nav_menu">
+                {%- for radio_btn in nav_days_btn %}
+                    <input type="radio" id="nav_day{{loop.index0}}" name="nav_day" value="{{radio_btn['Ymd']}}" {{radio_btn['checked']}}> <label for="nav_day{{loop.index0}}" class="radio-label">{{radio_btn['ja']}}</label>
+                {%- endfor %}
+                    <span style="width: 0.5rem">&nbsp;</span>
+                {%- for radio_btn in nav_times_btn %}
+                    <input type="radio" id="nav_time{{loop.index0}}" name="nav_time" value="{{radio_btn['value']}}" {{radio_btn['checked']}}> <label for="nav_time{{loop.index0}}" class="radio-label">{{radio_btn['label']}}時～</label>
+                {%- endfor %}
+                </div>
+                {%- endif %}
+            </form>
+        </nav>
+        <hr>
+        {#- 番組表のサービス名。<header></header> に記述してスクロールしないようにする #}
+        {%- if service_list %}
+        <div class="tv-programs-header">
+            <!-- サービス名 -->
+            {% for service_name in service_list -%}
+            <div class="service" style="grid-column: {{2 + loop.index0}};">{{service_name}}</div>
+            {% endfor -%}
+        </div>
+        {%- endif %}
+        {#- 週間番組表の日付 #}
+        {%- if days_strs_j %}
+        <div class="week-programs-header">
+            <!-- 日付 -->
+            {% for i in range(7) -%}
+            <div class="week-days" style="grid-column: {{2 + i}};">{{days_strs_j[i]}}</div>
+            {% endfor -%}
+        </div>
+        {%- endif %}
+    </header>

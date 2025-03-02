@@ -9,44 +9,44 @@ mirakurun client Ganbo CSS
 */
 /* タブのスタイル */
 .tab_item {
-	width: fit-content;
-	min-width: 100px;
-	border-top-left-radius: 7px;
-	border-top-right-radius: 7px;
-	border: 1px solid var(--color-border);
-	padding: .1em 1em;
-	font-size: 0.8rem;
-	color: var(--color-main);
-	background-color: var(--color-tab-back);
-	display: block;
-	float: left;
-	text-align: center;
-	font-weight: bold;
+    width: fit-content;
+    min-width: 100px;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+    border: 1px solid var(--color-border);
+    padding: .1em 1em;
+    font-size: 0.8rem;
+    color: var(--color-main);
+    background-color: var(--color-tab-back);
+    display: block;
+    float: left;
+    text-align: center;
+    font-weight: bold;
 }
 
 .tab_item:hover {
-	color: var(--color-hover);
-	background-color: var(--color-hover-back);
+    color: var(--color-hover);
+    background-color: var(--color-hover-back);
 }
 
 /* 選択されているタブの色を変える */
 main input:checked + .tab_item {
-	background-color: var(--color-select-back);
-	color: var(--color-select);
+    background-color: var(--color-select-back);
+    color: var(--color-select);
 }
 
 /* ラジオボタンを全て消す */
 input[name="tab_item"] {
-	display: none;
+    display: none;
 }
 
 /* タブ切り替えの中身のスタイル */
 .tab_content {
-	display: none;
-	padding: 0.2rem;
-	clear: both;
-	overflow: hidden;
-	width: fit-content;
+    display: none;
+    padding: 0.2rem;
+    clear: both;
+    overflow: hidden;
+    width: fit-content;
 }
 
 /* 選択されているタブのコンテンツのみを表示 */
@@ -56,14 +56,14 @@ input[name="tab_item"] {
 #tab4:checked ~ #tab4_content,
 #tab5:checked ~ #tab5_content,
 #tab6:checked ~ #tab6_content {
-	display: block;
+    display: block;
 }
 /*------------------------------------*/
 .color_setting_form th {
-	text-align:left
+    text-align:left
 }
 /*------------------------------------*/
 .std_setting_form th {
-	text-align:left
+    text-align:left
 }
 /*------------------------------------*/

@@ -1,0 +1,22 @@
+        <div class="tab_content" id="tab1_content">
+            <form id="set_addr_form" method="post">
+                <table>
+                    <caption>mirakurunとの通信設定、情報取得</caption>
+                    <tr>
+                        <th>IPアドレス：ポート番号</th>
+                        <td><input type="text"   id="ip_addr" name="ip_addr" class="text-036" style="width: 7rem;"            value="{{std_data['IPアドレス']}}" required>：
+                            <input type="number" id="port"    name="port"                     style="width: 5rem;" min="1025" value="{{std_data['ポート番号']}}" placeholder="40772" required>
+                        </td>
+                    </tr>
+                </table>
+                <div class="right_button">
+                    <input type="reset" class="button-036" value="元に戻す">
+                    <input type="button" id="test_addr" class="button-036" value="通信テスト" style="margin-left: 0.2rem">
+                    <input type="button" id="set_addr"  class="button-036" value="決定"       style="margin-left: 0.2rem">
+                </div>
+            </form>
+            <div id="server_result"></div>
+            <div class="msgbox notice">
+            IPアドレスに"localhost"は不可。「決定」すると、サービスの情報が初期化されます。
+            </div>
+        </div>

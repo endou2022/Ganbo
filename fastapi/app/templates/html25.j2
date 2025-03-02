@@ -1,38 +1,37 @@
-{% autoescape True %}
-		<form id="view_reserved_form" method="dialog">
-			<!-- 番組検索結果 -->
-			<table class="program_list striped_pattern">
-				<caption>予約状況</caption>
-				<thead>
-					<tr>
-					<th>予約状況</th>
-					<th>サービス名</th>
-					<th>放送時間</th>
-					<th>番組名</th>
-					<th>ジャンル</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% set date_str = namespace(old = '') %}
-					{%- for program in program_list %}
-					{%- if date_str.old != program['放送日'] %}
-					<tr>
-						<th colspan="6" class="separater">{{program['放送日']}}</th>
-					</tr>
-					{% set date_str.old = program['放送日'] %}
-					{%- endif -%}
-					<tr class="{{program['rec_status']}}">
-						<td>{{program['予約状況']}}</td>
-						<td>{{program['サービス名']}}</td>
-						<td>{{program['時間']}}</td>
-						<td>{{program['番組名']}}</td>
-						<td>{{program['ジャンル']}}</td>
-					</tr>
-					{%- endfor %}
-				</tbody>
-			</table>
-			<div class="right_button">
-				<input type="button" class="button-036" value="閉じる" onclick="$('#view_reserved_dialog')[0].close('閉じる')" autofocus>
-			</div>
-		</form>
-{% endautoescape %}
+
+        <form id="view_reserved_form" method="dialog">
+            <!-- 番組検索結果 -->
+            <table class="program_list striped_pattern">
+                <caption>予約状況</caption>
+                <thead>
+                    <tr>
+                    <th>予約状況</th>
+                    <th>サービス名</th>
+                    <th>放送時間</th>
+                    <th>番組名</th>
+                    <th>ジャンル</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% set date_str = namespace(old = '') %}
+                    {%- for program in program_list %}
+                    {%- if date_str.old != program['放送日'] %}
+                    <tr>
+                        <th colspan="6" class="separater">{{program['放送日']}}</th>
+                    </tr>
+                    {% set date_str.old = program['放送日'] %}
+                    {%- endif -%}
+                    <tr class="{{program['rec_status']}}">
+                        <td>{{program['予約状況']}}</td>
+                        <td>{{program['サービス名']}}</td>
+                        <td>{{program['時間']}}</td>
+                        <td>{{program['番組名']}}</td>
+                        <td>{{program['ジャンル']}}</td>
+                    </tr>
+                    {%- endfor %}
+                </tbody>
+            </table>
+            <div class="right_button">
+                <input type="button" class="button-036" value="閉じる" onclick="$('#view_reserved_dialog')[0].close('閉じる')" autofocus>
+            </div>
+        </form>

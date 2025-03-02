@@ -1,36 +1,35 @@
-{% autoescape True %}
-			<!-- 番組検索結果 -->
-			<div class="scroll-box">
-			<table class="program_list striped_pattern">
-				<thead>
-					<tr>
-						<th class="_sticky">予約状況</th>
-						<th class="_sticky">サービス名</th>
-						<th class="_sticky">放送時間</th>
-						<th class="_sticky">番組名</th>
-						<th class="_sticky">ジャンル</th>
-						<th class="_sticky">自動予約キーワード</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% set date_str = namespace(old = '') %}
-					{%- for program in program_list %}
-					{%- if date_str.old != program['放送日'] %}
-					<tr>
-						<th colspan="6" class="separater">{{program['放送日']}}</th>
-					</tr>
-					{% set date_str.old = program['放送日'] %}
-					{%- endif -%}
-					<tr id="{{program['ID']}}" class="{{program['rec_status']}}">
-						<td class="toggle_reserve">{{program['予約状況']}}</td>
-						<td>{{program['サービス名']}}</td>
-						<td>{{program['時間']}}</td>
-						<td class="program_name">{{program['番組名']}}</td>
-						<td>{{program['ジャンル']}}</td>
-						<td>{{program['自動予約']}}</td>
-					</tr>
-					{%- endfor %}
-				</tbody>
-			</table>
-			</div>
-{% endautoescape %}
+
+            <!-- 番組検索結果 -->
+            <div class="scroll-box">
+            <table class="program_list striped_pattern">
+                <thead>
+                    <tr>
+                        <th class="_sticky">予約状況</th>
+                        <th class="_sticky">サービス名</th>
+                        <th class="_sticky">放送時間</th>
+                        <th class="_sticky">番組名</th>
+                        <th class="_sticky">ジャンル</th>
+                        <th class="_sticky">自動予約キーワード</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% set date_str = namespace(old = '') %}
+                    {%- for program in program_list %}
+                    {%- if date_str.old != program['放送日'] %}
+                    <tr>
+                        <th colspan="6" class="separater">{{program['放送日']}}</th>
+                    </tr>
+                    {% set date_str.old = program['放送日'] %}
+                    {%- endif -%}
+                    <tr id="{{program['ID']}}" class="{{program['rec_status']}}">
+                        <td class="toggle_reserve">{{program['予約状況']}}</td>
+                        <td>{{program['サービス名']}}</td>
+                        <td>{{program['時間']}}</td>
+                        <td class="program_name">{{program['番組名']}}</td>
+                        <td>{{program['ジャンル']}}</td>
+                        <td>{{program['自動予約']}}</td>
+                    </tr>
+                    {%- endfor %}
+                </tbody>
+            </table>
+            </div>

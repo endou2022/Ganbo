@@ -9,25 +9,25 @@ mirakurun client Ganbo CSS
 @link https://b-risk.jp/blog/2021/01/anim-reference/ (2024/03/19)
 */
 .on_recording {
-	animation-name: recording;
-	animation-fill-mode: backwards;
-	animation-duration: 1s;
-	animation-iteration-count: infinite;
-	animation-timing-function: ease-in-out;
-	animation-delay: 0s;
-	animation-direction: alternate;
+    animation-name: recording;
+    animation-fill-mode: backwards;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+    animation-delay: 0s;
+    animation-direction: alternate;
 }
 
 @keyframes recording {
-	0% {
-		/*opacity: 0.3;*/
-		color: var(--color-main);
-	}
+    0% {
+        /*opacity: 0.3;*/
+        color: var(--color-main);
+    }
 
-	100% {
-		/*opacity: 1;*/
-		color: red;
-	}
+    100% {
+        /*opacity: 1;*/
+        color: red;
+    }
 }
 /*------------------------------------*/
 /*
@@ -35,29 +35,29 @@ tableの行（列）を『sticky』で固定したときにスクロールして
 @link https://125naroom.com/web/3816 (2024/04/11)
 */
 .scroll-box {
-	height: 550px;
-	overflow-y: auto;
+    height: 550px;
+    overflow-y: auto;
 }
 
 ._sticky {
-	position: sticky;
-	top: 0;
-	left: 0;
-	background: none;
-	border-top: none;
-	border-bottom: none;
+    position: sticky;
+    top: 0;
+    left: 0;
+    background: none;
+    border-top: none;
+    border-bottom: none;
 }
 
 ._sticky::before {
-	content: "";
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	border-top: 1px solid var(--color-border);
-	border-bottom: 1px solid var(--color-border);
-	background-color: var(--color-th-back);
-	z-index: -1;
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+    background-color: var(--color-th-back);
+    z-index: -1;
 }
 /*------------------------------------*/

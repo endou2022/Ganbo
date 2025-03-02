@@ -1,66 +1,54 @@
-{% autoescape True %}
-	<main>
-		<form id="new_final_form">
-			<table style="margin-bottom:0.5rem;">
-				<tr>
-					<th>サービスタイプ</th>
-					<th>サービス</th>
-					<th>ジャンル</th>
-					<th>時間帯</th>
-				</tr>
-				<tr>
-					<td>
-						<select id="service_type_ajax" name="service_type">
-							<option value="NO"></option>
-							<option value="GR">地デジ</option>
-							<option value="BS">ＢＳ</option>
-							<option value="CS">ＣＳ</option>
-						</select>
-					</td>
-					<td>
-						<select id="service_id_ajax" name="service_id">
-							<option value="0"></option>
-						</select>
-					</td>
-					<td>
-						<select id="genre_ajax" name="genre">
-							<option value="99"></option>
-							<option value="0">ニュース／報道</option>
-							<option value="1">スポーツ</option>
-							<option value="2">情報／ワイドショー</option>
-							<option value="3">ドラマ</option>
-							<option value="4">音楽</option>
-							<option value="5">バラエティ</option>
-							<option value="6">映画</option>
-							<option value="7">アニメ／特撮</option>
-							<option value="8">ドキュメンタリー／教養</option>
-							<option value="9">劇場／公演</option>
-							<option value="10">趣味／教育</option>
-							<option value="11">福祉</option>
-							<option value="12">(予備)</option>
-							<option value="13">(予備)</option>
-							<option value="14">拡張</option>
-							<option value="15">その他</option>
-						</select>
-					</td>
-					<td>
-						<select id="time_zone_ajax" name="time_zone">
-							<option value="24"></option>
-							<option value="0">00時～06時</option>
-							<option value="6">06時～12時</option>
-							<option value="12">12時～18時</option>
-							<option value="18">18時～24時</option>
-						</select>
-					</td>
-				</tr>
-			</table>
-		</form>
 
-		<!-- 終了・新番組 -->
-		<div id="search_result">
-		</div>
-		<div class="msgbox notice">
-		番組名の 🈟、🈠、🈡 を検索して出力します。無効予約、録画予約していない番組を薄く表示しています。
-		</div>
-	</main>
-{%- endautoescape %}
+    <main>
+        <form id="new_final_form">
+            <table style="margin-bottom:0.5rem;">
+                <tr>
+                    <th>サービスタイプ</th>
+                    <th>サービス</th>
+                    <th>ジャンル</th>
+                </tr>
+                <tr>
+                    <td>
+                        <select id="service_type_ajax" name="service_type">
+                            <option value="NO"></option>
+                            <option value="GR">地デジ</option>
+                            <option value="BS">ＢＳ</option>
+                            <option value="CS">ＣＳ</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select id="service_id_ajax" name="service_id">
+                            <option value="0"></option>
+                        </select>
+                    </td>
+                    <td>
+                        <select id="genre_ajax" name="genre">
+                            <option value="99"></option>
+                            <option value="0">ニュース／報道</option>
+                            <option value="1">スポーツ</option>
+                            <option value="2">情報／ワイドショー</option>
+                            <option value="3">ドラマ</option>
+                            <option value="4">音楽</option>
+                            <option value="5">バラエティ</option>
+                            <option value="6">映画</option>
+                            <option value="7">アニメ／特撮</option>
+                            <option value="8">ドキュメンタリー／教養</option>
+                            <option value="9">劇場／公演</option>
+                            <option value="10">趣味／教育</option>
+                            <option value="11">福祉</option>
+                            <option value="12">(予備)</option>
+                            <option value="13">(予備)</option>
+                            <option value="14">拡張</option>
+                            <option value="15">その他</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+        </form>
+
+        <!-- 終了・新番組 -->
+        <div id="search_result"></div>
+        <div class="msgbox notice">
+        番組名の 🈟、🈠、🈡 を検索して出力します。無効予約、録画予約していない番組を薄く表示しています。
+        </div>
+    </main>

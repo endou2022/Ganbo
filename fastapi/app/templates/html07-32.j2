@@ -1,0 +1,9 @@
+                        {%- for service in services %}
+                        <tr>
+                            <td><input type="checkbox" name="valid_list" value="{{service['サービスID']}}" {{service['有効']}}></td>
+                            <td><input type="number"   name="sort_list" min="0" style="width: 3rem" value="{{service['表示順']}}"></td>
+                            <td>{{service['チャンネル']}}</td>
+                            <td>{{service['サービスID']}} <input type="hidden" name="service_id_list" value="{{service['サービスID']}}"></td>
+                            <td>{{service['サービス名']}}</td>
+                        </tr>
+                        {%- endfor %}

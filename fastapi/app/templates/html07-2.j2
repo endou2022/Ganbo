@@ -1,0 +1,33 @@
+        <div class="tab_content" id="tab2_content">
+            <form id="color_setting_form">
+                <table class="color_setting_form">
+                    <caption>番組表の背景色設定</caption>
+                    <colgroup>
+                        <col style="width:11rem">
+                        <col>
+                        <col style="width:11rem">
+                        <col>
+                    </colgroup>
+                    <tbody>
+                {%- for i in range(0,18,2) %}
+                    <tr>
+                        <th>{{genres[i]['ジャンル']}}</th>
+                        <td><input type="color" name="colors" value="{{genres[i]['色']}}"></td>
+                        <th>{{genres[i+1]['ジャンル']}}</th>
+                        <td><input type="color" name="colors" value="{{genres[i+1]['色']}}"></td>
+                    </tr>
+
+                {%- endfor %}
+                    </tbody>
+                </table>
+                <div class="right_button" style="margin-bottom: 0.2rem;">
+                    <input type="reset" class="button-036" value="元に戻す">
+                    <input type="button" id="color_setting" class="button-036" value="決定">
+                </div>
+                <div id="color_result"></div>
+                <div class="msgbox notice">
+                    初期値は「白色」です。興味のあるジャンルに色を付けます。<br>
+                    ブラウザのキャッシュを削除しないと設定が反映されないことがあります。
+                </div>
+            </form>
+        </div>

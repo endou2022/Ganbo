@@ -18,8 +18,7 @@ CREATE TABLE `automatic` (
   `サービスID` int(11) UNSIGNED NOT NULL DEFAULT 0,
   `ジャンル番号` int(11) NOT NULL DEFAULT 99,
   `録画マージン前` int(11) NOT NULL DEFAULT 25,
-  `録画マージン後` int(11) NOT NULL DEFAULT -30,
-  `優先順位` int(10) UNSIGNED NOT NULL DEFAULT 40,
+  `録画マージン後` int(11) NOT NULL DEFAULT 30,
   `登録日時` timestamp NOT NULL DEFAULT current_timestamp(),
   `更新日時` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -93,11 +92,10 @@ INSERT INTO `setting` (`ID`, `キー`, `値`) VALUES
 (1, 'IPアドレス', '192.168.11.75'),
 (2, 'ポート番号', '40772'),
 (3, '録画マージン前', '25'),
-(4, '録画マージン後', '-30'),
+(4, '録画マージン後', '30'),
 (5, '番組情報更新時刻', '04:30'),
 (6, '保存ファイル名マクロ', '($ServiceName$)$Title$.ts'),
-(7, '優先順位', '40'),
-(8, '保存ルート', '/mnt/ts');
+(7, '保存ルート', '/mnt/ts');
 
 
 ALTER TABLE `automatic`

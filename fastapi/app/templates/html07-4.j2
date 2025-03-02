@@ -1,0 +1,50 @@
+        <div class="tab_content" id="tab6_content">
+            <form id="std_setting_form">
+                <table class="std_setting_form">
+                    <caption>標準設定</caption>
+                    <tr>
+                        <th>番組情報取得時刻</th>
+                        <td><input type="time" name="reflesh_time" class="button-036" title="番組情報を更新し、すべての予約を再構築します。" value="{{std_data['番組情報更新時刻']}}" required></td>
+                    </tr>
+                    <tr>
+                        <th>録画マージン</th>
+                        <td>開始<input type="number" name="margin_before" value="{{std_data['録画マージン前']}}" title="25秒を推奨"                   placeholder="25" required>秒前</td>
+                    </tr>
+                    <tr>
+                        <th>録画マージン</th>
+                        <td>終了<input type="number" name="margin_after"  value="{{std_data['録画マージン後']}}" title="NHK、映画の場合は+30秒を推奨" placeholder="30" required>秒後</td>
+                    </tr>
+                    <tr>
+                        <th>保存ルート</th>
+                        <td><input type="text" name="save_file_root" class="text-036" style="width: 17rem;" value="{{std_data['保存ルート']}}" title="編集できません" readonly></td>
+                    </tr>
+                    <tr>
+                        <th>保存ファイル名(マクロ)</th>
+                        <td><input type="text" name="save_file_macro" class="text-036" style="width: 17rem;" value="{{std_data['保存ファイル名マクロ']}}" placeholder="($ServiceName$)$TitleH$.ts" required></td>
+                    </tr>
+                </table>
+                <div class="right_button">
+                    <input type="reset" class="button-036" value="元に戻す">
+                    <input type="button" id="std_setting" class="button-036" value="決定">
+                </div>
+            </form>
+            <div id="server_result_std"></div>
+            <div class="msgbox notice">
+                <ul>
+                    <li>NHK、映画は終了時刻まで放送されることがありますので、<br>
+                        録画マージン(終了)を+30秒程度に設定してください。</li>
+                    <li>保存ファイル名のマクロは、<br>
+                        $Title$ : 番組名<br>
+                        $date$ : 放送日(%Y-%m-%d)<br>
+                        $time$ : 開始時刻(%H%M%S)<br>
+                        $datetime$ : 放送日時(%Y-%m-%d %H%M%S)<br>
+                        $ServiceName$ : サービス名<br>
+                        のみです。</li>
+                    <li>NTPサーバーを利用してPCの時刻を合わせてください。<br>
+                        日本のNTPサーバーは ntp.nict.jp です。</li>
+                </ul>
+            </div>
+            <div class="msgbox message">
+                番組情報を取得し、予約を再構築します<span style="width: 0.5rem">&nbsp;</span><input type="button" id="reflesh_programs" class="button-036" title="すべての予約を再構築します。" value="番組情報取得">
+            </div>
+        </div>

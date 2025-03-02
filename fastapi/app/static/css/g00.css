@@ -11,96 +11,96 @@ mirakurun client Ganbo CSS
 とっても感謝しています。
 */
 .tv-programs-header {
-	margin-top: 0;
-	margin-bottom: 0;
-	display: grid;
-	/*grid-template-columns:*//* プログラムで作成*/
-	grid-template-rows: 23px;
-	column-gap: 3px;
-	row-gap: 2px;
-	width: fit-content;
-	background-color: var(--color-program-table-back);
-	border-radius: 7px;
+    margin-top: 0;
+    margin-bottom: 0;
+    display: grid;
+    /*grid-template-columns:*//* プログラムで作成*/
+    grid-template-rows: 23px;
+    column-gap: 3px;
+    row-gap: 2px;
+    width: fit-content;
+    background-color: var(--color-program-table-back);
+    border-radius: 7px;
 }
 
 /* サービス名欄の設定 */
 .service {
-	text-align: center;
-	font-weight: bold;
-	font-size: small;
-	padding: 1px;
-	overflow: hidden;
-	border-radius: 3px;
-	grid-row: 1;
-	background-color: var(--color-tv-title-back);
-	border: 1px solid var(--color-border);
+    text-align: center;
+    font-weight: bold;
+    font-size: small;
+    padding: 1px;
+    overflow: hidden;
+    border-radius: 3px;
+    grid-row: 1;
+    background-color: var(--color-tv-title-back);
+    border: 1px solid var(--color-border);
 }
 
 /* 番組表のgrid レイアウトの設定 */
 /*
-	grid-row = 1 +  (放送開始時刻(H) - 番組表先頭時刻(H)) * 60 / span [放送時間(m)]
-	grid-column = 1 + i
-	ex.
-	<div id="123456" class="content-area" style="grid-row: 323 / span 6; grid-column: 2;">
-		<div class="content-time">23:22 - 23:28</div>
-		<div class="content-title">テレニュース🈑</div>
-		<div class="content-discription">この時間帯で起きた最新ニュースを短い時間の中で</div>
-	</div>
+    grid-row = 1 +  (放送開始時刻(H) - 番組表先頭時刻(H)) * 60 / span [放送時間(m)]
+    grid-column = 1 + i
+    ex.
+    <div id="123456" class="content-area" style="grid-row: 323 / span 6; grid-column: 2;">
+        <div class="content-time">23:22 - 23:28</div>
+        <div class="content-title">テレニュース🈑</div>
+        <div class="content-discription">この時間帯で起きた最新ニュースを短い時間の中で</div>
+    </div>
 */
 .tv-programs {
-	display: grid;
-	/*grid-template-columns:*/		/* プログラムで作成*/
-	/*grid-template-rows: max-content repeat(calc(6 * 60), 0.2rem);*/ /*0.2emが1分に相当*/
-	grid-template-rows: 23px repeat(calc(6 * 60), 0.2rem);
-	column-gap: 3px;				/* カラムの間隔 */
-	row-gap: 2px;					/* 行の間隔 */
-	width: fit-content;				/*幅を内容に合わせる*/
-	background-color: var(--color-program-table-back);
-	border-radius: 7px;
+    display: grid;
+    /*grid-template-columns:*/          /* プログラムで作成*/
+    /*grid-template-rows: max-content repeat(calc(6 * 60), 0.2rem);*/ /*0.2emが1分に相当*/
+    grid-template-rows: 23px repeat(calc(6 * 60), 0.2rem);
+    column-gap: 3px;                    /* カラムの間隔 */
+    row-gap: 2px;                       /* 行の間隔 */
+    width: fit-content;                 /*幅を内容に合わせる*/
+    background-color: var(--color-program-table-back);
+    border-radius: 7px;
 }
 
 /* 時間軸の設定 */
 .time-axis {
-	text-align: center;
-	font-weight: bold;
-	font-size: small;
-	padding: 1px;
-	border-radius: 3px;
-	grid-column: 1;
-	background-color: var(--color-tv-title-back);
-	border: 1px solid var(--color-border);
+    text-align: center;
+    font-weight: bold;
+    font-size: small;
+    padding: 1px;
+    border-radius: 3px;
+    grid-column: 1;
+    background-color: var(--color-tv-title-back);
+    border: 1px solid var(--color-border);
 }
 
 /* 番組表示 */
 /* 番組の枠 以下の放送時間、番組名、番組内容を内包する*/
 .content-area {
-	border-radius: 3px;
-	font-size: x-small;
-	overflow: hidden;
-	background-color: var(--color-back);
-	border: solid 1px gray;
+    border-radius: 3px;
+    font-size: x-small;
+    overflow: hidden;
+    background-color: var(--color-back);
+    border: solid 1px gray;
 }
 
 /* 放送時間 */
 .content-time {
-	margin-left: 3px;
-	font-weight: bold;
-	font-size: larger;
-	color: var(--color-main);
+    margin-left: 3px;
+    font-weight: bold;
+    font-size: larger;
+    color: var(--color-main);
 }
 
 /* 番組名 */
 .content-title {
-	margin-left: 3px;
-	font-size: larger;
-	font-weight: bold;
+    margin-left: 3px;
+    font-size: larger;
+    font-weight: bold;
 }
 
 /* 番組内容 */
 .content-discription {
-	margin-left: 3px;
-	margin-top: 3px;
-	font-size: x-small;
-	color: midnightblue;
+    margin-left: 3px;
+    margin-top: 3px;
+    font-size: x-small;
+    color: midnightblue;
 }
 /*------------------------------------*/

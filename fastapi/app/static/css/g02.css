@@ -3,33 +3,34 @@
 mirakurun client Ganbo CSS
 */
 /*------------------------------------*/
+/* 終了・新番組 */
 /* 予約状況 */
 .program_list td:nth-of-type(1) {
-	text-align: center;
-/*	width: 5rem;*/
+    text-align: center;
+/*    width: 5rem;*/
 }
 /* サービス名 */
 .program_list td:nth-of-type(2) {
-	width: 8rem;
+    width: 8rem;
 }
 /* 放送時間 */
 /*.program_list td:nth-of-type(3) {
-	width: 7rem;
+    width: 7rem;
 }*/
 /* 番組名 */
 .program_list td:nth-of-type(4) {
-	width: 35rem;
+    width: 35rem;
 }
 /* ジャンル */
 /*.program_list td:nth-of-type(5) {
-	width: 10rem;
+    width: 10rem;
 }*/
 /* 自動予約キーワード */
 /*.program_list td:nth-of-type(6) {
-	width: 5rem;
+    width: 5rem;
 }*/
 
 .program_name , .toggle_reserve {
-	cursor: pointer;
+    cursor: pointer;
 }
 /*------------------------------------*/

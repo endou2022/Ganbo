@@ -1,68 +1,63 @@
-{% autoescape True %}
-			<form id="automatic_form" method="dialog">
-				<input type="hidden" id="automatic_id" name="automatic_id" value="{{automatic['ID']}}">
-				<input type="hidden" id="dlog_keyword" name="dlog_keyword" value="{{automatic['キーワード']}}">
-				<table>
-					<caption>自動予約設定</caption>
-					<tr>
-						<th>自動予約ID</th>
-						<td>{{automatic['ID']}}</td>
-					</tr>
-					<tr>
-						<th colspan="2" class="separater">検索条件</th>
-					</tr>
-					<tr>
-						<th>キーワード</th>
-						<td>{{automatic['キーワード']}}</td>
-					</tr>
-					<tr>
-						<th>サービスタイプ</th>
-						<td> <select id="service_type_ajax" name="service_type">
-								<option value="NO" {{service_type_selected['NO']}}></option>
-								<option value="GR" {{service_type_selected['GR']}}>地デジ</option>
-								<option value="BS" {{service_type_selected['BS']}}>ＢＳ</option>
-								<option value="CS" {{service_type_selected['CS']}}>ＣＳ</option>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<th>サービス</th>
-						<td><select id="service_id_ajax" name="service_id">
-							{%- for opt in service_id_selected %}
-								<option value="{{opt['サービスID']}}" {{opt['selected']}}>{{opt['サービス名']}}</option>
-							{%- endfor %}
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<th>ジャンル</th>
-						<td> <select id="genre_static" name="genre">
-							{%- for opt in option_genre %}
-								<option value="{{opt['ジャンル番号']}}" {{opt['selected']}}>{{opt['ジャンル']}}</option>
-							{%- endfor %}
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<th colspan="2" class="separater">録画基本設定</th>
-					</tr>
-					<tr>
-						<th>優先順位</th>
-						<td><input type="number" id="priority" name="priority" min=0 value="{{automatic['優先順位']}}" required></td>
-					</tr>
-					<tr>
-						<th>録画マージン</th>
-						<td>開始 <input type="number" id="margin_before" name="margin_before" value="{{automatic['録画マージン前']}}" required>秒前</td>
-					</tr>
-					<tr>
-						<th>録画マージン</th>
-						<td>終了 <input type="number" id="margin_after" name="margin_after" value="{{automatic['録画マージン後']}}" required>秒後</td>
-					</tr>
-				</table>
-				<div class="right_button">
-					<input type="submit" id="del_keyword" class="button-036" value="削除">
-					<input type="submit" id="update_keyword" class="button-036" value="変更">
-					<input type="button" class="button-036" value="閉じる" onclick="$('#update_keyword_dialog')[0].close('閉じる')" autofocus>
-				</div>
-			</form>
-{% endautoescape %}
+
+            <form id="automatic_form" method="dialog">
+                <input type="hidden" id="automatic_id" name="automatic_id" value="{{automatic['ID']}}">
+                <input type="hidden" id="dlog_keyword" name="dlog_keyword" value="{{automatic['キーワード']}}">
+                <table>
+                    <caption>自動予約設定</caption>
+                    <tr>
+                        <th>自動予約ID</th>
+                        <td>{{automatic['ID']}}</td>
+                    </tr>
+                    <tr>
+                        <th colspan="2" class="separater">検索条件</th>
+                    </tr>
+                    <tr>
+                        <th>キーワード</th>
+                        <td>{{automatic['キーワード']}}</td>
+                    </tr>
+                    <tr>
+                        <th>サービスタイプ</th>
+                        <td> <select id="service_type_ajax" name="service_type">
+                                <option value="NO" {{service_type_selected['NO']}}></option>
+                                <option value="GR" {{service_type_selected['GR']}}>地デジ</option>
+                                <option value="BS" {{service_type_selected['BS']}}>ＢＳ</option>
+                                <option value="CS" {{service_type_selected['CS']}}>ＣＳ</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>サービス</th>
+                        <td><select id="service_id_ajax" name="service_id">
+                            {%- for opt in service_id_selected %}
+                                <option value="{{opt['サービスID']}}" {{opt['selected']}}>{{opt['サービス名']}}</option>
+                            {%- endfor %}
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>ジャンル</th>
+                        <td> <select id="genre_static" name="genre">
+                            {%- for opt in option_genre %}
+                                <option value="{{opt['ジャンル番号']}}" {{opt['selected']}}>{{opt['ジャンル']}}</option>
+                            {%- endfor %}
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th colspan="2" class="separater">録画基本設定</th>
+                    </tr>
+                    <tr>
+                        <th>録画マージン</th>
+                        <td>開始 <input type="number" id="margin_before" name="margin_before" value="{{automatic['録画マージン前']}}" title="25秒を推奨"                   required>秒前</td>
+                    </tr>
+                    <tr>
+                        <th>録画マージン</th>
+                        <td>終了 <input type="number" id="margin_after"  name="margin_after"  value="{{automatic['録画マージン後']}}" title="NHK、映画の場合は+30秒を推奨" required>秒後</td>
+                    </tr>
+                </table>
+                <div class="right_button">
+                    <input type="submit" id="del_keyword" class="button-036" value="削除">
+                    <input type="submit" id="update_keyword" class="button-036" value="変更">
+                    <input type="button" class="button-036" value="閉じる" onclick="$('#update_keyword_dialog')[0].close('閉じる')" autofocus>
+                </div>
+            </form>
