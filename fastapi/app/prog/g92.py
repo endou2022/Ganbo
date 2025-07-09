@@ -118,13 +118,20 @@ def set_reserve(reserve_data: dict):
 # ---------------------------------------------------------------------------
 
 
-def search_programs(key_word: str, search_data: dict):
+def search_programs(key_word: str, search_data: dict, free_flag: bool = False, word: str = ''):
     '''条件に合った番組を検索する(search_data はすべて文字列で来る)
     - key_word : キーワード
     - search_data['service_type'] : サービスのタイプ  (NO | GR | BS | CS)
     - search_data['service_id'] : サービスID=0の場合は指定なし
     - search_data['genre'] : ジャンル番号=99の場合は指定なし
+    - free_flag : g04.search_prog()からのリクエストを受ける
+    - word : g04.search_prog()の自由キーワード
     - return : 検索したデータのリスト
+    '''
+    '''
+    g04.search_prog()だけは、どんなキーワードが送られてくるか分からないので、sql文にkey_wordを直接入力してはいけない。
+    SQLインジェクションだった(2025/07/02まで)。
+    「'」を含む文字列を検索しているときにエラーが出たので気づいた。
     '''
     '''
     ※重要な注意※
@@ -145,7 +152,9 @@ def search_programs(key_word: str, search_data: dict):
 
     # 条件設定
     param = []
-    if search_data['service_type'] == 'NO':        # サービスタイプの絞りなし
+    if free_flag:
+        param.append(f"%{word}%")                   # LIKEを使う場合はsql文の外で % を付けておく
+    if search_data['service_type'] == 'NO':         # サービスタイプの絞りなし
         and_type = ""
     else:
         and_type = "AND (`channels`.`タイプ` = %s) "

@@ -13,8 +13,8 @@ router = APIRouter(tags=['終了・新番組'])
 # --------------------------------------------------
 
 
-@router.get('/new_final_list')
-@router.post('/new_final_list')
+@router.get('/new-final-list')
+@router.post('/new-final-list')
 def get_programs_new_final_list():
     '''終了・新番組画面を出力する
     - return : 終了・新番組画面(HTML)

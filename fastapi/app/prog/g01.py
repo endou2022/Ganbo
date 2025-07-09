@@ -47,12 +47,12 @@ def get_programs_weekly(genre_no: int = None, service_type: str = Form(None), se
     option_genre = g91.make_genre_option(genre)
     nav_days_btn, nav_times_btn = g91.make_nav_menu_days(start_time)
 
-    # ７日間、６時間、ジャンルで絞って、日付・時刻順に、データベースから番組情報を得る
+    # 8日間、6時間、ジャンルで絞って、日付・時刻順に、データベースから番組情報を得る
     days_strs_j = []
     program_package_list = []
     conn = mydb.connect(**config.database)
     cur = conn.cursor(dictionary=True)
-    for i in range(7):        # 7日間
+    for i in range(8):        # 8日間
         day_time = start_time + datetime.timedelta(days=i)
         days_strs_j.append(day_time.strftime('%m月%d日(%a)'))
         for j in range(6):    # 6時間

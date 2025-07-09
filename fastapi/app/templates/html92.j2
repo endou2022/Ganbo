@@ -13,11 +13,11 @@
                 <div class="nav_menu">
                     <input type="submit" class="button-036 {{btn_menu[0]}}" value="番組表"        formaction="/daily">
                     <input type="submit" class="button-036 {{btn_menu[1]}}" value="週間番組表"    formaction="/weekly">
-                    <input type="submit" class="button-036 {{btn_menu[2]}}" value="終了・新番組"  formaction="/new_final_list">
-                    <input type="submit" class="button-036 {{btn_menu[3]}}" value="予約一覧"      formaction="/reserved_list">
-                    <input type="submit" class="button-036 {{btn_menu[4]}}" value="番組検索"      formaction="/program_search">
-                    <input type="submit" class="button-036 {{btn_menu[5]}}" value="自動予約一覧"  formaction="/automatic_list">
-                    <input type="submit" class="button-036 {{btn_menu[6]}}" value="設定"          formaction="/set_ganbo">
+                    <input type="submit" class="button-036 {{btn_menu[2]}}" value="終了・新番組"  formaction="/new-final-list">
+                    <input type="submit" class="button-036 {{btn_menu[3]}}" value="予約一覧"      formaction="/reserved-list">
+                    <input type="submit" class="button-036 {{btn_menu[4]}}" value="番組検索"      formaction="/program-search">
+                    <input type="submit" class="button-036 {{btn_menu[5]}}" value="自動予約一覧"  formaction="/automatic-list">
+                    <input type="submit" class="button-036 {{btn_menu[6]}}" value="設定"          formaction="/set-ganbo">
                 </div>
 
                 {%- if service_flag %}
@@ -69,7 +69,7 @@
         {%- if days_strs_j %}
         <div class="week-programs-header">
             <!-- 日付 -->
-            {% for i in range(7) -%}
+            {% for i in range(8) -%}
             <div class="week-days" style="grid-column: {{2 + i}};">{{days_strs_j[i]}}</div>
             {% endfor -%}
         </div>

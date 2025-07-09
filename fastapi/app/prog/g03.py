@@ -13,8 +13,8 @@ router = APIRouter(tags=['予約一覧'])
 # --------------------------------------------------
 
 
-@router.get('/reserved_list')
-@router.post('/reserved_list')
+@router.get('/reserved-list')
+@router.post('/reserved-list')
 def reserved_list():
     '''予約一覧を出力する
     - return : 予約一覧(HTML)

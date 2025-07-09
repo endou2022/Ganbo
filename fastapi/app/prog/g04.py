@@ -14,8 +14,8 @@ router = APIRouter(tags=['番組検索'])
 # --------------------------------------------------
 
 
-@router.get('/program_search')
-@router.post('/program_search')
+@router.get('/program-search')
+@router.post('/program-search')
 def program_search():
     '''番組検索画面を出力する
     - return : 番組検索画面(HTML)
@@ -67,8 +67,8 @@ def search_prog(search_data: dict):
     - link https://qiita.com/aKuad/items/e4d89b24a717c955d701 (2024/01/23)
     '''
     # 検索実行
-    key_word = f"`番組名` LIKE '%{search_data['key_word']}%'"
-    program_list = g92.search_programs(key_word, search_data)
+    key_word = "`番組名` LIKE %s"
+    program_list = g92.search_programs(key_word, search_data, True, search_data['key_word'])
 
     # <tbody>作成
     template = env_j2.get_template('html14.j2')

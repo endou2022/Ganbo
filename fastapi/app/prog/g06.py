@@ -85,7 +85,7 @@ def reflesh_programs():
     del_prog = 0
     # 番組取得 番組表に表示するサービスだけ繰り返す
     for channel in channels:
-        programs, ret = get_programs(config.mirakurun_ip, config.mirakurun_port, channel['サービスID'])    # サービスIDに関する番組素取得
+        programs, ret = get_programs(channel['サービスID'])    # サービスIDに関する番組素取得
         if programs == 'error':
             return {"result": False, "exception": ret}              # get_programs()で例外が発生した
 
@@ -105,28 +105,30 @@ def reflesh_programs():
     cur.close()
     conn.close()
 
-    result = g94.rebuild_reserved()    # 番組予約再構築
-    result['番組情報'] = prog_num      # console.table()用
-    result['更新件数'] = chg_prog
-    result['名前変更'] = chg_name
-    result['削除件数'] = del_prog
+    logging.info('番組情報取得結果')
+    logging.info(f'番組情報 = {prog_num} , 番組更新件数 = {chg_prog} , 名前変更 = {chg_name} , 削除件数 = {del_prog}')
+    reflesh_result = {}
+    reflesh_result['番組情報'] = prog_num   # console.table()用
+    reflesh_result['番組更新件数'] = chg_prog
+    reflesh_result['名前変更'] = chg_name
+    reflesh_result['削除件数'] = del_prog
+
+    rebuild_result = g94.rebuild_reserved()    # 番組予約再構築
+
+    result = reflesh_result | rebuild_result
     result['result'] = True
 
-    logging.info('番組情報取得結果')
-    logging.info(f'番組情報 = {result['番組情報']} , 更新件数 = {result['更新件数']} , 名前変更 = {result['名前変更']} , 削除件数 = {result['削除件数']}')
     return result
 # --------------------------------------------------
 
 
-def get_programs(ip_addr, port, serviceId):
+def get_programs(serviceId):
     '''番組情報を得る
-    - ip_addr : IPアドレス
-    - port : ポート番号
     - serviceId : サービスID
     - return : 番組情報 , 番組件数または例外
     '''
     try:
-        url = f"http://{ip_addr}:{port}/api/programs?serviceId={serviceId}"        # mirakurun 番組情報取得API
+        url = f"http://{config.mirakurun_ip}:{config.mirakurun_port}/api/programs?serviceId={serviceId}"        # mirakurun 番組情報取得API
         response = requests.get(url, timeout=5)            # https://atmarkit.itmedia.co.jp/ait/articles/2209/27/news035.html (2024/03/01)
         response.raise_for_status()
         programs = json.loads(response.text)
@@ -229,4 +231,61 @@ def cahnge_save_name(program_data):
     conn.close()
 
     return ret_count
+# ---------------------------------------------------------------------------
+
+
+def get_program_by_id(pid: int, destfile: str):
+    '''IDで示される番組情報を得る
+    - pid : 番組情報ID
+    - destfile : 保存ファイル名
+    - return : 番組情報
+    '''
+    try:
+        url = f"http://{config.mirakurun_ip}:{config.mirakurun_port}/api/programs/{pid}"         # mirakurun 番組情報取得API
+        response = requests.get(url, timeout=5)
+        if response.status_code != 200:     # 番組が見つからなかった
+            return None
+        response.raise_for_status()
+    except Exception as exp:
+        logging.error(f'番組情報取得例外 {str(exp)}')
+        program = None
+
+    program = json.loads(response.text)     # 番組情報解析　g06.analize_programs() の一部
+    program['ID'] = program['id']                                       # ID
+    start_at = datetime.datetime.fromtimestamp(program['startAt'] / 1000)
+    program['start_at'] = start_at
+    program['開始時刻'] = start_at.strftime('%Y-%m-%d %H:%M:%S')        # 開始時刻
+    duration = datetime.timedelta(milliseconds=program['duration'])
+    program['放送時間'] = duration.seconds                              # 放送時間
+    end_at = start_at + duration
+    program['終了時刻'] = end_at.strftime('%Y-%m-%d %H:%M:%S')          # 終了時刻
+
+    return program
+# ---------------------------------------------------------------------------
+
+
+def update_program(program):
+    '''番組情報更新
+    - program 番組情報
+    - return 更新された番組情報
+    '''
+    conn = mydb.connect(**config.database)
+    cur = conn.cursor(dictionary=True)
+
+    sql = "UPDATE `programs` SET `開始時刻` = %s , `放送時間` = %s , `終了時刻` = %s WHERE `ID` = %s"
+    param = (program['開始時刻'], program['放送時間'], program['終了時刻'], program['ID'])
+    cur.execute(sql, param)
+
+    sql = ("SELECT * , `programs`.`ID` AS ProgID , `programs`.`サービスID` AS sid "
+           "FROM `programs` "
+           "LEFT JOIN `channels` ON (`programs`.`サービスID`   = `channels`.`サービスID`) "
+           "LEFT JOIN `genres`   ON (`programs`.`ジャンル番号` = `genres`.`ジャンル番号`) "
+           "WHERE `programs`.`ID` = %s ")
+    cur.execute(sql, (program['ID'],))
+    program = cur.fetchone()
+
+    cur.close()
+    conn.close()
+
+    return program
 # ---------------------------------------------------------------------------

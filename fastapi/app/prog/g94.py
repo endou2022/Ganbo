@@ -96,7 +96,7 @@ def rec_task_create(program):
     destfile = config.save_root + '/' + program['保存ファイル名']
     args = (config.mirakurun_ip, config.mirakurun_port, sid, type_ch, rectime, destfile)                   # rivarunパラメータ
     # 録画タスク生成
-    config.rec_task_list[ProgID] = g93.RecTask(ProgID, start_at, args)    # どこからも参照されなくなると、pythonのランタイムが消してくれるはず
+    config.rec_task_list[ProgID] = g93.RecTask(ProgID, start_at, args, program['録画マージン前'])    # どこからも参照されなくなると、pythonのランタイムが消してくれるはず
 # ---------------------------------------------------------------------------
 
 
@@ -212,21 +212,20 @@ def rebuild_reserved():
         logging.info('automaticテーブルID再編成')
 
     # automaticテーブルを元に、programsテーブルの自動予約IDを付け直す
-    result = set_automatic_id()
+    result = set_automatic_id()     # return : "予約更新件数" , "内有効予約" , "内無効予約"
 
     # 録画タスクを作る
     result['作成タスク数'] = register_all_reservations()
     result['録画中'] = remain_num
 
-    logging.info("番組予約再構築（自動予約が重なることがあるために合計が合わないことがある）")
-    logging.info(f"更新件数 = {result['更新件数']} , 内有効予約件数 = {result['内有効予約']} , 内無効予約件数 = {result['内無効予約']} , 録画中={result['録画中']} , 作成タスク数={result['作成タスク数']}")
+    logging.info(f"予約更新件数 = {result['予約更新件数']} (内有効予約件数 = {result['内有効予約']} , 内無効予約件数 = {result['内無効予約']})")
     return result
 # --------------------------------------------------
 
 
 def set_automatic_id():
     '''`programs`.`自動予約ID`をすべて NULL にして、`automatic`テーブルの情報を関連付ける
-    - return : "更新件数" , "内有効予約" , "内無効予約"
+    - return : "予約更新件数" , "内有効予約" , "内無効予約"
     '''
     conn = mydb.connect(**config.database)
     cur = conn.cursor(dictionary=True)
@@ -236,8 +235,6 @@ def set_automatic_id():
     cur.execute("SELECT * FROM `automatic` ORDER BY `更新日時` DESC ")      # 自動予約設定を読み出す
     automatics = cur.fetchall()
 
-    valid_count = 0     # 予約件数
-    invalid_count = 0   # 無効予約件数
     # 予約する sql (`予約`がNULLの場合)
     sql_a = ("UPDATE `programs` "
              "SET `予約` = '○' , `自動予約ID` = %s , "
@@ -293,19 +290,27 @@ def set_automatic_id():
             match program['予約']:
                 case None:
                     cur.execute(sql_a, param)    # 予約する sqlを使う
-                    valid_count += 1
                 case '○':
                     cur.execute(sql_b, param)    # 自動予約IDを変更する sqlを使う。自動予約IDは上書きする
-                    valid_count += 1
                 case '×':
                     cur.execute(sql_b, param)
-                    invalid_count += 1
+
+    # 予約更新件数
+    sql_valid = "SELECT COUNT(*) AS valid FROM programs WHERE `予約` = '○' AND `開始時刻` > NOW() "
+    cur.execute(sql_valid)
+    ret = cur.fetchone()
+    valid_count = ret['valid']
+
+    sql_invalid = "SELECT COUNT(*) AS invalid FROM programs WHERE `予約` = '×' AND `開始時刻` > NOW() "
+    cur.execute(sql_invalid)
+    ret = cur.fetchone()
+    invalid_count = ret['invalid']
 
     cur.close()
     conn.close()
 
     result = {}
-    result["更新件数"] = valid_count + invalid_count
+    result["予約更新件数"] = valid_count + invalid_count
     result["内有効予約"] = valid_count
     result["内無効予約"] = invalid_count
     return result

@@ -18,8 +18,8 @@ router = APIRouter(tags=['設定'])
 # --------------------------------------------------
 
 
-@router.get('/set_ganbo')
-@router.post('/set_ganbo')
+@router.get('/set-ganbo')
+@router.post('/set-ganbo')
 def set_ganbo():
     '''設定画面を出力する
     - return : 設定画面(HTML)
@@ -170,8 +170,8 @@ def set_addr_port(ip_addr: str, port: int):
         config.mirakurun_port = port
 
         # チャンネルデータを更新する
-        get_channels(ip_addr, port)
-        answer = ('<div class="msgbox message"><form action="/set_ganbo" method="get">IPアドレスとポート番号を設定しました<br>\n'
+        get_channels()
+        answer = ('<div class="msgbox message"><form action="/set-ganbo" method="get">IPアドレスとポート番号を設定しました<br>\n'
                   'ページを再読み込みしてください&nbsp;<input type="submit" value="再読み込み"></form></div>\n')
         return HTMLResponse(answer)
     except Exception as exp:
@@ -303,14 +303,12 @@ def set_std(reflesh_time: str = Form(), margin_before: int = Form(), margin_afte
 # --------------------------------------------------
 
 
-def get_channels(ip_addr: str, port: int):
+def get_channels():
     '''サービス情報（チャンネル）を得て、データベースに格納する
-    - ip_addr : IPアドレス
-    - port : ポート番号
     - return : {"result":True|False , "channels":サービスの数 , "exception":例外の内容}
     '''
     # mirakurunからチャンネルの情報をもらう
-    url = f"http://{ip_addr}:{port}/api/channels"
+    url = f"http://{config.mirakurun_ip}:{config.mirakurun_port}/api/channels"
 
     try:
         response = requests.get(url, timeout=5)

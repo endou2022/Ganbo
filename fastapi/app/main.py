@@ -75,7 +75,7 @@ app = FastAPI(title=config.__soft_name__,
               description=f"<h1>{config.__description__}</h1>",
               version=config.__version__,
               lifespan=lifespan,
-              license_info={"name": "BSD license"})
+              license_info={"name": "BSD License"})
 
 # https://qiita.com/rubberduck/items/3734057d92a5ee7a2e83 (2024/02/01)
 app.mount(path="/static", app=StaticFiles(directory="static"), name="static")

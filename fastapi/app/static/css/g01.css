@@ -8,7 +8,7 @@ mirakurun client Ganbo CSS
     margin-top: 0;
     margin-bottom: 0;
     display: grid;
-    grid-template-columns: 20px repeat(7, 150px);    /* 7 は固定--番組表と違うところ*/
+    grid-template-columns: 20px repeat(8, 150px);    /* 8 は固定--番組表と違うところ*/
     grid-template-rows: 23px;
     column-gap: 3px;
     row-gap: 2px;
@@ -31,7 +31,7 @@ mirakurun client Ganbo CSS
 
 .week-programs {
     display: grid;
-    grid-template-columns: 20px repeat(7, 150px);
+    grid-template-columns: 20px repeat(8, 150px);   /* 8日間表示*/
     grid-template-rows:  repeat(6, minmax(100px, auto));
     column-gap: 3px;
     row-gap: 2px;

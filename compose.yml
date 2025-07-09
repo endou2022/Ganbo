@@ -14,8 +14,8 @@ services:
 # 動画ファイルの保存場所指定。必須の変更項目
 # D:\TS 、または、 /mnt/ts(ホスト側のディレクトリ) を環境に合わせて変更
 # どちらかを # でコメントアウトする
-#      - D:\TS:/mnt/ts			# Windowsの場合の例
-      - /mnt/ts:/mnt/ts		# Linuxの場合の例。パーミッションはすべてのユーザーが読み書き可能とする。
+      - D:\TS:/mnt/ts			# Windowsの場合の例
+#      - /mnt/ts:/mnt/ts		# Linuxの場合の例。パーミッションはすべてのユーザーが読み書き可能とする。
     environment:
       - TZ=Asia/Tokyo
       - ENVIRON
@@ -48,7 +48,7 @@ services:
         max-file: "1"
         max-size: 10m
 
-# データベースの中身を見たい人は、下記の # をすべて消す
+# データベースの中身を見ない人は以下のすべてを消す
 # ポート番号 4000 でphpmyadminにアクセスできる
   phpmyadmin:
     build:

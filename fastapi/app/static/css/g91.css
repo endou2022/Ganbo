@@ -15,20 +15,20 @@ mirakurun client Ganbo CSS
     --color-main: black;                    /*テキスト*/
     --color-back: white;                    /*背景*/
     --color-program-table-back: aliceblue;  /*番組表の背景色（番組データが無い場所）*/
-    --color-border: #2d6a4f;                /*境界線*/
+    --color-border: #461177;                /*境界線*/
     --color-select: white;                  /*ラジオボタンテキスト：マウスで選択したとき*/
-    --color-select-back: #2d6a4f;           /*ラジオボタン背景：マウスで選択したとき*/
+    --color-select-back: #461177;           /*ラジオボタン背景：マウスで選択したとき*/
     --color-hover: white;                   /*テキスト：マウスが通過したとき*/
-    --color-hover-back: #2d6a4f;            /*背景：マウスが通過したとき*/
-    --color-tv-title-back: #74c69d;         /*番組表のサービス、時間軸*/
-    --color-th-back: #74c69d;               /*<th>の背景*/
-    --color-table-even-back: #95d5b2;       /*<tbody>偶数行の背景*/
+    --color-hover-back: #461177;            /*背景：マウスが通過したとき*/
+    --color-tv-title-back: #858ae3;         /*番組表のサービス、時間軸*/
+    --color-th-back: #8eb5f0;               /*<th>の背景*/
+    --color-table-even-back: #93caf6;       /*<tbody>偶数行の背景*/
     --color-invalid: red;                   /*エラー入力*/
-    --color-title-back: #40916c;            /*タイトルの背景色*/
-    --color-title-flag: #1b4332;            /*タイトルの左端*/
-    --color-tab-back: #74c69d;              /*タブメニューの背景*/
-    --color-arib-gaiji: #1b4332;            /*ARIB外字の背景*/
-    --color-not_reserved: gray              /*無効予約の文字色*/
+    --color-title-back: #7364d2;            /*タイトルの背景色*/
+    --color-title-flag: #461177;            /*タイトルの左端*/
+    --color-tab-back: #858ae3;              /*タブメニューの背景*/
+    --color-arib-gaiji: #5829a7;            /*ARIB外字の背景*/
+    --color-not_reserved: dimgray;          /*無効予約の文字色*/
 }
 /*------------------------------------*/
 body {
@@ -168,6 +168,10 @@ input[readonly], textarea[readonly], select[readonly] {
     background-color: var(--color-back);
 }
 /*------------------------------------*/
+dialog {
+    background-color: white;
+}
+/*------------------------------------*/
 /* 自動予約設定ダイアローグ */
 #set_keyword_dialog , #update_keyword_dialog {
     padding: 0.5rem;
@@ -201,7 +205,7 @@ input[readonly], textarea[readonly], select[readonly] {
 /* @link https://webfrontend.ninja/html-dialog-element/ (2023/12/17) */
 dialog::backdrop {
     backdrop-filter: blur(1px);
-    background-color: rgb(0 200 0 / 0.05);   /*カスタムプロパティを関数の中には入れられない？*/
+    background-color: rgb(142 181 240 / 0.2);   /*カスタムプロパティを関数の中には入れられない？*/
 }
 
 .right_button {

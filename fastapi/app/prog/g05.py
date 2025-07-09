@@ -14,8 +14,8 @@ router = APIRouter(tags=['自動予約一覧'])
 # --------------------------------------------------
 
 
-@router.get('/automatic_list')
-@router.post('/automatic_list')
+@router.get('/automatic-list')
+@router.post('/automatic-list')
 def automatic_form():
     '''自動予約一覧画面を出力する
     - return : 自動予約一覧画面(HTML)
@@ -27,11 +27,11 @@ def automatic_form():
     conn = mydb.connect(**config.database)
     cur = conn.cursor(dictionary=True)
     # 自動予約一覧データ
-    sql = ("SELECT * , `automatic`.`ID` AS automatic_id , `automatic`.`タイプ` AS automatic_type , `automatic`.`更新日時` AS update_at "
+    sql = ("SELECT * , `automatic`.`ID` AS automatic_id , `automatic`.`タイプ` AS automatic_type , `automatic`.`更新日時` AS update_at , `automatic`.`登録日時` AS entry_at "
            "FROM `automatic` "
            "LEFT JOIN `channels` ON (`automatic`.`サービスID`   = `channels`.`サービスID`) "
            "LEFT JOIN `genres`   ON (`automatic`.`ジャンル番号` = `genres`.`ジャンル番号`) "
-           "ORDER BY `automatic`.`更新日時` ASC ")
+           "ORDER BY `automatic`.`登録日時` ASC ")
     cur.execute(sql)
     rows = cur.fetchall()
 
@@ -65,6 +65,7 @@ def automatic_form():
             row['ジャンル'] = ''
 
         row['更新日'] = row['update_at'].strftime('%Y/%m/%d %H:%M')
+        row['登録日'] = row['entry_at'].strftime('%Y/%m/%d %H:%M')
 
     cur.close()
     conn.close()

@@ -1,7 +1,7 @@
 # ---------------------------------------------------------------------------
 # RecTask Class  スレッドを使って録画を管理するクラス
 # ---------------------------------------------------------------------------
-# 汎用のクラスにはしていない＝パラメータチェックなし、エラー処理なし
+# 汎用のクラスにはしていない＝パラメータチェックなし、エラー処理なし、外部のファイルにも依存している
 # concurrent.futures.ThreadPoolExecutor が threading.Thread の上位互換というが、
 # メインスレッドを停止したときに、サブスレッドが停止してくれないので、今回は利用しなかった
 # ---------------------------------------------------------------------------
@@ -11,20 +11,22 @@ import subprocess
 import time
 import datetime
 import logging
+from os.path import splitext
 
-from prog import g94
+from prog import g06, g94, config
 # ---------------------------------------------------------------------------
 
 
 class RecTask():
     '''スレッドを使って録画を管理するクラス'''
 
-    def __init__(self, p_id: int, start_at: datetime, args: tuple):
+    def __init__(self, p_id: int, start_at: datetime, args: tuple, before_margin: int):
         '''コンストラクタ
-            オブジェクト作成と同時にタスクを登録し、スケジューラを起動する。登録するタスクは１つのみで使う
+            オブジェクト作成と同時にタスクを登録し、スケジューラを起動する。
         - p_id : 番組ID
         - start_at : タスク実行時刻。実行時刻の検査は呼び出し側で行う
         - args rivarun へ渡すパラメータ (host , port , sid , type_ch , rectime , destfile)
+        - before_margin 録画マージン前、番組情報確認に利用
         '''
         self.scheduler = sched.scheduler(time.time, time.sleep)
         self.thread = threading.Thread(target=self.scheduler.run, daemon=True)        # daemon=Trueにすることで、メインスレッド終了時にサブスレッドも終了する
@@ -39,31 +41,35 @@ class RecTask():
         self.rectime = args[4]          # int
         self.destfile = args[5]         # str
         self.start_str = start_at.strftime('%Y-%m-%d %H:%M:%S')
+        self.before_margin = before_margin
+        self.check_at = start_at - datetime.timedelta(minutes=config.check_at)          # 番組の時間が変更されていないか検査する時刻 = 1分前
 
         self.set_task()                 # タスク登録
         self.thread.start()
 # -------------------------
 
     def set_task(self):
-        '''タスクを登録する。scheduler に登録するタスクは１つのみ'''
-        self.scheduler.enterabs(self.start_at.timestamp(), 1, self.run_rivarun)  # run_rivarun , debug_task
+        '''タスクを登録する'''
+        if self.check_at > datetime.datetime.now():
+            self.scheduler.enterabs(self.check_at.timestamp(), 1, self.check_program)   # 番組検査タスク
+        self.scheduler.enterabs(self.start_at.timestamp(), 2, self.run_rivarun)         # 録画タスク
         g94.set_recording_status(self.id, '録画予約')
 # -------------------------
 
     def cancel_task(self):
         '''実行前のタスクをすべてキャンセルする。
-
         scheduler.run() で実行してしまったタスクは操作できない
         '''
-        for event in self.scheduler.queue:    # タスクは1つしか登録しないので、こんなことはしなくてよいが
+        for event in self.scheduler.queue:
             self.scheduler.cancel(event)
-            g94.set_recording_status(self.id, '予約解除')
+
+        g94.set_recording_status(self.id, '予約解除')
 # -------------------------
 
     def stop_task(self):
-        '''タスクを止める。
+        '''録画タスクを止める。
 
-        タスクが実行前ならば、タスクキャンセル、サブプロセスが動いているのならば、サブプロセス停止
+        録画タスクが実行前ならば、録画タスクキャンセル、サブプロセスが動いているのならば、サブプロセス停止
         '''
         self.cancel_task()
         if self.proc is not None:
@@ -76,7 +82,7 @@ class RecTask():
                 g94.set_recording_status(self.id, '録画中断')
             else:
                 self.returncode = self.proc.poll()
-                logging.info(f'録画終了済み : {self.id} , {self.destfile} , returncode = {self.returncode}')
+                # logging.info(f'録画終了済み : {self.id} , {self.destfile} , returncode = {self.returncode}')
 # -------------------------
 
     def task_is_running(self):
@@ -152,4 +158,30 @@ class RecTask():
             logging.error(f'デバッグタスク例外 : {self.id} , {self.destfile} , exception = {str(e)}')
             g94.set_recording_status(self.id, str(e))
             g94.del_rec_task(self.id)
+# --------------------------------------------------
+
+    def check_program(self):
+        '''番組の開始時刻が変更されているかどうか調べる。
+        変更されていたら録画タスクを作り直す
+        '''
+        program = g06.get_program_by_id(self.id, self.destfile)
+        if program is None:             # 番組が存在しなければ、録画タスクを消して終わる
+            logging.info(f'番組が見つからなかった {self.start_at} {self.destfile}')
+            fname, _ = splitext(self.destfile)
+            with open(fname + '.log', 'a') as file:
+                file.write(f'番組が見つからなかった {self.start_at} {self.destfile}\n')
+            g94.del_rec_task(self.id)
+            return
+
+        start_at = program['start_at'] - datetime.timedelta(seconds=self.before_margin)
+        if self.start_at == start_at:
+            return                      # 録画開始時刻に変更がなければ戻る (番組情報検査ルーチン終了)
+
+        logging.info(f'番組開始時刻変更 {self.start_at} -> {start_at} {self.destfile}')
+        fname, _ = splitext(self.destfile)
+        with open(fname + '.log', 'a') as file:
+            file.write(f'番組開始時刻変更 {self.start_at} -> {start_at} {self.destfile}\n')
+        g94.del_rec_task(self.id)
+        program = g06.update_program(program)       # 番組情報更新
+        g94.rec_task_create(program)                # 録画タスク作成
 # --------------------------------------------------

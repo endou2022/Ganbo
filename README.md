@@ -1,4 +1,4 @@
-# Ganbo ver.1.1
+# Ganbo ver.1.2
 
 ## Ganboとは何か
 - Ganboは、TV  チューナーサーバー  [Mirakurun](https://github.com/Chinachu/Mirakurun)  のクライアントです。
@@ -80,18 +80,18 @@
 
 ## アクセス・使い方
 使えば分かるソフトです。(^_^)<br>
-(画像は ver.1.0のものです。ver.1.1は色や機能が若干違います)<br>
+(画像は ver.1.0のものです。ver.1.2は色や機能が若干違います)<br>
 アクセスは、GanboをインストールしたPCのIPアドレスを  addr  とするとき、  
 | 機能 | アドレス |画面イメージ|
 |:---|:---|:---|
 |番組表| http://addr:2595 <br>http://addr:2595/daily|[<img width="150" alt="番組表" src="readme/00_daily.png">](readme/00_daily.png)|
 |週間番組表| http://addr:2595/weekly |[<img width="150" alt="週間番組表" src="readme/01_weekly.png">](readme/01_weekly.png)|
 |週間番組表<br>ジャンル指定| http://addr:2595/weekly/n <br>nは  0  から 15|[<img width="150" alt="週間番組表" src="readme/01_weekly6.png">](readme/01_weekly6.png)|
-|終了・新番組|http://addr:2595/new_final_list|[<img width="150" alt="終了・新番組" src="readme/02_new_final.png">](readme/02_new_final.png)|
-|予約一覧|http://addr:2595/reserved_list|[<img width="150" alt="予約一覧" src="readme/03_reserved_list.png">](readme/03_reserved_list.png)|
-|番組検索|http://addr:2595/program_search|[<img width="150" alt="番組検索" src="readme/04_search.png">](readme/04_search.png)|
-|自動予約一覧|http://addr:2595/automatic_list|[<img width="150" alt="自動予約一覧" src="readme/05_automatic.png">](readme/05_automatic.png)|
-|設定|http://addr:2595/set_ganbo|[<img width="150" alt="設定" src="readme/06_setting.png">](readme/06_setting.png)|
+|終了・新番組|http://addr:2595/new-final-list|[<img width="150" alt="終了・新番組" src="readme/02_new_final.png">](readme/02_new_final.png)|
+|予約一覧|http://addr:2595/reserved-list|[<img width="150" alt="予約一覧" src="readme/03_reserved-list.png">](readme/03_reserved-list.png)|
+|番組検索|http://addr:2595/program-search|[<img width="150" alt="番組検索" src="readme/04_search.png">](readme/04_search.png)|
+|自動予約一覧|http://addr:2595/automatic-list|[<img width="150" alt="自動予約一覧" src="readme/05_automatic.png">](readme/05_automatic.png)|
+|設定|http://addr:2595/set-ganbo|[<img width="150" alt="設定" src="readme/06_setting.png">](readme/06_setting.png)|
 |自動ドキュメント生成<br>(開発者用)|http://addr:2595/docs  Swagger UI<br>http://addr:2595/redoc  ReDoc||
 
 です。ブックマークをしておくと便利です。<br>
@@ -111,7 +111,6 @@
 	ユーザー認証はありません。<br>
 	セキュリティーについて基本的なことしか考慮していません。<br>
 	インターネットからアクセスできるようにしておくことは大変危険です。
-- 番組追従機能（スポーツ中継が延びて、放送時間が変わることに対応する機能）はありません。
 - チューナーの数を管理していません。<br>
 	チューナーの数以上に予約を重ねたときどうなるか分かりません。
 - CS、有料放送はテストしていません。
@@ -121,6 +120,9 @@
 - 番組検索は、まれに関係のない番組を拾ってくることがあります。（「ドイツ」検索問題）<br>
 	照合順序を  utf8mb4_unicode_ci  にした副作用です。
 - スレートデバイス(タブレット、スマートフォンなど)のことは考えていません。
+- 高校野球中継のように、6時間を超える番組は表示されないことがあります。
+- 放送時間延長には対応していません。
+- 番組追従機能（スポーツ中継が延びて、放送時間が変わることに対応する機能）はありません。
 
 ## 謝辞
 - 本ソフトは、  [Mirakurun](https://github.com/Chinachu/Mirakurun)  と  [Rivarun](https://github.com/Chinachu/Rivarun)  を利用しました。<br>
@@ -167,6 +169,7 @@ Mirakurunの環境を整えるために次のホームページを参考にし�
 	Sambaでファイル共有して、Windowsで利用しています。
 
 ## 更新履歴
+- 1.2     2025/06/01  録画前に放送時刻を確認するルーチンを追加、URL(の形)を変更
 - 1.1     2025/03/01  半年使ってみて、使い勝手が悪いと感じたところを修正
 - 1.0     2024/07/01  初期バージョン
 - 0.1     2024/02/28  とりあえず動くα版

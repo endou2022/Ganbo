@@ -73,7 +73,7 @@ CREATE TABLE `programs` (
   `番組名` varchar(255) NOT NULL DEFAULT '-' COMMENT '検索対象',
   `説明` varchar(500) NOT NULL DEFAULT '-',
   `ジャンル番号` int(11) NOT NULL DEFAULT 15,
-  `拡張情報` varchar(1000) NOT NULL DEFAULT '-',
+  `拡張情報` varchar(1500) NOT NULL DEFAULT '-',
   `予約` enum('○','×') DEFAULT NULL COMMENT 'NULL:予約なし\r\n○:予約\r\n×:予約無効',
   `自動予約ID` int(11) DEFAULT NULL COMMENT '番号がある場合、自動予約',
   `録画マージン前` int(11) NOT NULL DEFAULT 25 COMMENT '単位はsec',

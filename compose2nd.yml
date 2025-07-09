@@ -58,6 +58,8 @@ services:
         max-file: "1"
         max-size: 10m
 
+# データベースの中身を見ない人は以下のすべてを消す
+# ポート番号 4000 でphpmyadminにアクセスできる
   phpmyadmin:
     build:
       context: ./phpmyadmin

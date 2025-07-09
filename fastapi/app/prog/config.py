@@ -2,7 +2,7 @@
 # 定数 (python に定数という概念はないが)
 # ---------------------------------------------------------------------------
 __soft_name__ = 'Ganbo'
-__version__ = '1.1'
+__version__ = '1.2'
 __description__ = 'テレビチューナーサーバー mirakurun のクライアント'
 __copyright__ = '(C)Copyright 2024,2025 Y.Endou All rights reserved.'
 software = f"{__soft_name__} {__version__}"
@@ -32,4 +32,5 @@ mirakurun_ip = ""           # mirakurun IP アドレス
 mirakurun_port = ""         # mirakurun ポート番号
 margin_before = 25          # 録画マージン前
 margin_after = -30          # 録画マージン後
+check_at = 1                # 番組検査ルーチン実行時刻 n分前
 # ---------------------------------------------------------------------------
