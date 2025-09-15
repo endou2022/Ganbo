@@ -94,6 +94,27 @@ function ReplaceARIB(index, element) {
 }
 //---------------------------------------------------------------------------
 /**
+ * stringMapObjに従って、selector要素を置換する
+ * Copilot 2025/07/24
+ * @param string selector : 置換対象の要素
+ * @param Object stringMapObj : 置き換えマップ
+ */
+function replaceElements(selector, stringMapObj) {
+    $(selector).each(function () {
+        let before_html = $(this).html();
+
+        // すべての key に対して置換を実行
+        for (const [key, value] of Object.entries(stringMapObj)) {
+            // key は正規表現に影響しない前提なので、単純な文字列置換でOK
+            after_html = before_html.split(key).join(value);
+            // https://qiita.com/tenkei/items/e7bf0ab457f25a963f42 (2025/07/24)
+        }
+
+        $(this).html(after_html);
+    });
+}
+//---------------------------------------------------------------------------
+/**
  * ナビゲーションメニューのサービス、日時が変更された
  * click クラスの付いているボタンをソフトウエア的にクリックして Form を送信し画面遷移する
  */

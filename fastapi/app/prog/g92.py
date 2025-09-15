@@ -258,6 +258,7 @@ def change_allow_char(org_str: str) -> str:
     '''文字列からからOSのファイル名としてふさわしくない文字を全角にしてしまう
     1. 文字列前後の空白文字を削除
     2. 文字列前のピリオドを削除
+    Windowsの予約語(CON,PRN,AUX...)をチェックしていない
     - org_str 処理する文字列
     - return : 処理後の文字列
     '''

@@ -131,7 +131,10 @@ def get_programs(serviceId):
         url = f"http://{config.mirakurun_ip}:{config.mirakurun_port}/api/programs?serviceId={serviceId}"        # mirakurun 番組情報取得API
         response = requests.get(url, timeout=5)            # https://atmarkit.itmedia.co.jp/ait/articles/2209/27/news035.html (2024/03/01)
         response.raise_for_status()
-        programs = json.loads(response.text)
+        # https://hirosetakahito.hatenablog.com/entry/2019/12/25/144159 (2025/09/13)
+        # https://murasan-net.com/2021/12/31/2021-12-31-161241/ (2025/09/13)
+        # json.load に入れてはいけない制御文字があった場合の対策
+        programs = json.loads(response.text, strict=False)
         return_num = len(programs)
     except Exception as exp:
         logging.error(f'番組情報取得例外 {str(exp)}')
@@ -250,7 +253,7 @@ def get_program_by_id(pid: int, destfile: str):
         logging.error(f'番組情報取得例外 {str(exp)}')
         program = None
 
-    program = json.loads(response.text)     # 番組情報解析　g06.analize_programs() の一部
+    program = json.loads(response.text, strict=False)                  # 番組情報解析　g06.analize_programs() の一部
     program['ID'] = program['id']                                       # ID
     start_at = datetime.datetime.fromtimestamp(program['startAt'] / 1000)
     program['start_at'] = start_at
