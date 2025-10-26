@@ -1,15 +1,14 @@
 # ---------------------------------------------------------------------------
 # 「番組検索」ルーチン
 # ---------------------------------------------------------------------------
-from jinja2 import Environment, FileSystemLoader
+import mysql.connector as mydb
 from fastapi import APIRouter
 from fastapi.responses import HTMLResponse
-import mysql.connector as mydb
+from jinja2 import Environment, FileSystemLoader
 
-from prog import g92, config
+from prog import config, g92
 
 env_j2 = Environment(loader=FileSystemLoader('./templates'), autoescape=True)
-
 router = APIRouter(tags=['番組検索'])
 # --------------------------------------------------
 

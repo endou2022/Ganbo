@@ -2,18 +2,17 @@
 # 「設定」ルーチン
 # ---------------------------------------------------------------------------
 import json
-import requests
 import logging
 
-from jinja2 import Environment, FileSystemLoader
+import mysql.connector as mydb
+import requests
 from fastapi import APIRouter, Form
 from fastapi.responses import HTMLResponse
-import mysql.connector as mydb
+from jinja2 import Environment, FileSystemLoader
 
-from prog import g95, config
+from prog import config, g95
 
 env_j2 = Environment(loader=FileSystemLoader('./templates'), autoescape=True)
-
 router = APIRouter(tags=['設定'])
 # --------------------------------------------------
 

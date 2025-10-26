@@ -1,0 +1,69 @@
+{
+    "name": "FastAPI Dev Container",
+    "dockerComposeFile": "../compose.yml",
+    "service": "fastapi",
+    "workspaceFolder": "/app",
+    // VS Codeの拡張機能  主にChatGPT 2025/10/17
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-python.python", // Python
+                "ms-python.vscode-pylance", // Pylance
+                "charliermarsh.ruff", // Ruff (Linter/Formatter)
+                "njpwerner.autodocstring", // autoDocstring
+                "samuelcolvin.jinjahtml", // Jinja
+                "formulahendry.auto-close-tag", // Auto Close Tag
+                "formulahendry.auto-rename-tag", // Auto Rename Tag
+                "visualstudioexptteam.vscodeintellicode"
+            ],
+            "settings": {
+                // Python 関連
+                // "python.pythonPath": "/usr/local/bin/python"
+                "python.defaultInterpreterPath": "/usr/local/bin/python",
+                "python.analysis.typeCheckingMode": "off", // 型チェック off , basic , standard , strict
+                "python.analysis.autoImportCompletions": true, // 未インポートのモジュールや関数を補完候補に出す
+                "python.analysis.autoSearchPaths": true,
+                "python.formatting.provider": "none",
+                //"python.languageServer": "Pylance",
+                // Ruff 設定
+                "ruff.enable": true,
+                "ruff.lintOnSave": true,
+                "ruff.formatOnSave": true,
+                "ruff.args": [
+                    "--fix"
+                ],
+                // autoDocstring 自動生成スタイル
+                "autoDocstring.docstringFormat": "google",
+                "autoDocstring.includeDescription": true,
+                "autoDocstring.includeName": false,
+                "autoDocstring.startOnNewLine": true,
+                // HTML / Jinja2 関連
+                "files.associations": {
+                    "*.html": "jinja-html",
+                    "*.jinja": "jinja-html",
+                    "*.j2": "jinja-html"
+                },
+                // ファイル関連
+                "files.trimTrailingWhitespace": true,
+                "[markdown]": {
+                    "files.trimTrailingWhitespace": false,  // markdownは 行末の半角スペース2つで改行なので、消さないようにする
+                    "editor.renderWhitespace": "boundary"   // スペースは ・ で表示される
+                },
+                "files.insertFinalNewline": true,
+                "files.trimFinalNewlines": true,
+                // タブ・インデント
+                "editor.tabSize": 4,
+                "editor.insertSpaces": true,
+                // 自動保存・フォーマット
+                "editor.formatOnSave": true,
+                "editor.codeActionsOnSave": {
+                    "source.organizeImports": true,
+                    "source.fixAll.ruff": true
+                }
+            }
+        }
+    },
+    // コンテナが起動した後、VS Codeが接続するたびに実行されるコマンド。
+    // "postStartCommand": "uvicorn app.main:app --reload --host 0.0.0.0 --port 8000",
+    "remoteUser": "root"
+}

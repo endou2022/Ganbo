@@ -2,7 +2,7 @@
 # 定数 (python に定数という概念はないが)
 # ---------------------------------------------------------------------------
 __soft_name__ = 'Ganbo'
-__version__ = '1.2'
+__version__ = '1.2R2'
 __description__ = 'テレビチューナーサーバー mirakurun のクライアント'
 __copyright__ = '(C)Copyright 2024,2025 Y.Endou All rights reserved.'
 software = f"{__soft_name__} {__version__}"

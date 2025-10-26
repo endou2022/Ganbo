@@ -1,15 +1,14 @@
 # ---------------------------------------------------------------------------
 # 「自動予約一覧」ルーチン
 # ---------------------------------------------------------------------------
-from jinja2 import Environment, FileSystemLoader
+import mysql.connector as mydb
 from fastapi import APIRouter
 from fastapi.responses import HTMLResponse
-import mysql.connector as mydb
+from jinja2 import Environment, FileSystemLoader
 
-from prog import g91, g92, g94, config
+from prog import config, g91, g92, g94
 
 env_j2 = Environment(loader=FileSystemLoader('./templates'), autoescape=True)
-
 router = APIRouter(tags=['自動予約一覧'])
 # --------------------------------------------------
 

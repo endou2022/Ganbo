@@ -4,10 +4,10 @@
 import datetime
 import logging
 
-from fastapi import APIRouter
 import mysql.connector as mydb
+from fastapi import APIRouter
 
-from prog import g92, g93, config
+from prog import config, g92, g93
 
 router = APIRouter(tags=['録画タスク管理'])
 # ---------------------------------------------------------------------------

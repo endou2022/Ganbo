@@ -3,15 +3,14 @@
 # ---------------------------------------------------------------------------
 import datetime
 
-from jinja2 import Environment, FileSystemLoader
-from fastapi import APIRouter, Form, Header
-from fastapi.responses import HTMLResponse
 import mysql.connector as mydb
+from fastapi import APIRouter, Request
+from fastapi.responses import HTMLResponse
+from jinja2 import Environment, FileSystemLoader
 
-from prog import g91, config
+from prog import config, g91
 
 env_j2 = Environment(loader=FileSystemLoader('./templates'), autoescape=True)
-
 router = APIRouter(tags=['週間番組表'])
 # --------------------------------------------------
 
@@ -19,25 +18,21 @@ router = APIRouter(tags=['週間番組表'])
 @router.get('/weekly/{genre_no}')        # パスパラメータでジャンルを指定する
 @router.get('/weekly')                   # パスパラメータがない場合。上下の順番を入れ替えてはいけない
 @router.post('/weekly')
-def get_programs_weekly(genre_no: int = None, service_type: str = Form(None), service_id: int = Form(None), genre: int = Form(None), nav_day: str = Form(None), nav_time: int = Form(None), cookie: str = Header(None)):
+async def get_programs_weekly(request: Request, genre_no:int=None):
     '''週間番組表を出力する
-    - genre_no : ジャンル番号 0..15。フォームパラメータ、クッキーより優先される
-    - service_type : サービスのタイプ  (GR | BS | CS) ない場合はGR
-    - service_id : サービスID=0の場合は指定なし
-    - genre : ジャンル番号=99の場合は 0にする ジャンル指定は必須
-    - nav_day  : 表示する日にち ない場合は今日
-    - nav_time : 表示する時間帯 ない場合は現在の時間帯
-    - cookie : クッキーの文字列 name:str=Cookie()で取得することもできるが、Cookie()は1つのクッキーしか得られない
+    - request: Request フォームからのパラメータ
+    - genre_no: パスパラメータ フォームからのパラメータより優先する
     - return : 週間番組表(HTML)
     '''
+    cookies = request.cookies                   # cookiesは最初からdict # Qwen3-Max 2025/10/11
+    form_data = dict(await request.form())      # Form()パラメータ
+
+    service_type, service_id, genre, nav_day, nav_time, start_time, end_time = g91.set_default_query_param(cookies , form_data)
     # パスパラメータでジャンルを指定する場合
     if genre_no is not None and genre_no >= 0 and genre_no < 16:
         genre = genre_no
-    # クエリーパラメータにデフォルトを設定にする
-    service_type, service_id, genre, nav_day, nav_time, start_time, end_time = g91.set_default_query_param(
-        service_type, service_id, genre, nav_day, nav_time, cookie)
-    if genre == 99:    # ジャンル番号=99の場合は 0 (ニュース／報道)にする ジャンル指定は必須
-        genre = 0
+    if genre == 99:    # ジャンル番号=99の場合は 6「映画」にする ジャンル指定は必須
+        genre = 6
 
     # nav_menuのパラメータを整える
     page_title = config.__soft_name__ + " 週間番組表"

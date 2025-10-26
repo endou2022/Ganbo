@@ -1,16 +1,16 @@
 # ---------------------------------------------------------------------------
 # メインルーチン
 # ---------------------------------------------------------------------------
-import time
 import locale
 import logging
+import time
+from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from starlette.middleware.base import BaseHTTPMiddleware
-from contextlib import asynccontextmanager
 
-from prog import g00, g01, g02, g03, g04, g05, g06, g07, g91, g92, g94, g95, config
+from prog import config, g00, g01, g02, g03, g04, g05, g06, g07, g91, g92, g94, g95
 
 
 # --------------------------------------------------
@@ -27,7 +27,7 @@ class MyHeadersMiddleware(BaseHTTPMiddleware):
 
     async def dispatch(self, request, call_next):
         response = await call_next(request)
-        response.headers["Cache-Control"] = "no-cache, no-store"
+        # response.headers["Cache-Control"] = "no-cache, no-store"
         # https://www.ipa.go.jp/security/vuln/websecurity/clickjacking.html (2024/06/18)
         response.headers["X-Frame-Options"] = "SAMEORIGIN"
         # https://qiita.com/KWS_0901/items/c8f0bd39751cc845ea64 (2024/06/18)

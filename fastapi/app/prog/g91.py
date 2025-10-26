@@ -3,82 +3,56 @@
 # ---------------------------------------------------------------------------
 import datetime
 
-from jinja2 import Environment, FileSystemLoader
+import mysql.connector as mydb
 from fastapi import APIRouter
 from fastapi.responses import HTMLResponse
-import mysql.connector as mydb
+from jinja2 import Environment, FileSystemLoader
 
-from prog import g92, g94, config
+from prog import config, g92, g94
 
 env_j2 = Environment(loader=FileSystemLoader('./templates'), autoescape=True)
-
 router = APIRouter(tags=['共通ルーチン1'])
 # ---------------------------------------------------------------------------
+def set_default_query_param(cookies:dict , form_data: dict):
+    '''パラメータを設定する
 
-
-def set_default_query_param(service_type: str, service_id: int, genre: int, nav_day: str, nav_time: int, cookie_str: str):
-    '''クエリーパラメータにデフォルトを設定にする
-
-    フォームからのパラメータがない場合、クッキーをデフォルトを設定にする
-    - service_type : サービスのタイプ  (GR | BS | CS) ない場合はGR
-    - service_id : サービスID=0の場合は指定なし
-    - genre : ジャンル番号=99の場合は指定なし
-    - nav_day  : 表示する日にち ない場合は今日
-    - nav_time : 表示する時間帯 ない場合は現在の時間帯
-    - cookie_str : クッキーの文字列
-    - return : クエリーパラメータ
+    デフォルトのパラメーターを、クッキー、フォームパラメータで上書きする
+    - cookies:dict : クッキー
+    - form_data: dict フォームパラメータ
+    - return : 設定したパラメータ
+        - return return_data とするのが普通だが、呼び出し元で書きやすいようにした。
+        - return_data['service_type']:str     : サービスのタイプ  (GR | BS | CS) ない場合はGR
+        - return_data['service_id']:int       : サービスID=0の場合は指定なし
+        - return_data['genre']:int            : ジャンル番号=99の場合は指定なし
+        - return_data['nav_day']:str          : 表示する日にち ない場合は今日
+        - return_data['nav_time']:int         : 表示する時間帯 ない場合は現在の時間帯
+        - return_data['start_time']:datetime  : 表示開始時刻
+        - return_data['end_time']:datetime    : 表示終了時刻
     '''
-    # クッキーやHTMLからのフォーム変数を辞書として受け取る方法はないものか
-    # クッキー文字列を分解してクッキーを得る --> 文字列なので適切な型に変換する必要がある。
-    # pythonはインタプリタで実装されているので、適宜型を変換してくれるものと思っていた
-    cookies = {}
-    if cookie_str is not None:
-        cookie_str_list = cookie_str.split(';')
-        for key_val_str in cookie_str_list:
-            key_val_list = key_val_str.split('=')
-            cookies[str.strip(key_val_list[0])] = str.strip(key_val_list[1])
+    return_data = {}                           # デフォルトのパラメータ
+    return_data['service_type']    = "GR"      # 地デジ
+    return_data['service_id']      = "0"       # 0は指定なし フォームからのパラメータは文字列で来るはず。番兵プログラムだ！(;_;)
+    return_data['genre']           = "99"      # 99は指定なし
+    return_data['nav_day']         = datetime.datetime.now().strftime('%Y-%m-%d')  # 今日
+    return_data['nav_time']        = str(6 * (datetime.datetime.now().hour // 6))  # 現在の時刻、'//' 整数除算(割り算の整数部)
 
-    # フォームからのパラメータがない場合、クッキーをデフォルトを設定にする
-    if service_type is None:
-        if 'service_type' in cookies:
-            service_type = cookies['service_type']     # クッキー
-        else:
-            service_type = "GR"                        # デフォルト
+    # デフォルトのパラメーターを、クッキー、フォームパラメータで上書きしてゆく
+    return_data.update(cookies)  # dict(**return_data , **cookies )ではエラーが出た
+    return_data.update(form_data)
 
-    if service_id is None:
-        if 'service_id' in cookies:
-            service_id = int(cookies['service_id'])
-        else:
-            service_id = 0                             # 0は指定なし 番兵プログラムだ！(;_;)
+    # 範囲の調整
+    dt_c = datetime.datetime.strptime(return_data['nav_day'], '%Y-%m-%d')
+    if dt_c < datetime.datetime.now():
+        return_data['nav_day'] = datetime.datetime.now().strftime('%Y-%m-%d')
 
-    if genre is None:
-        if 'genre' in cookies:
-            genre = int(cookies['genre'])
-        else:
-            genre = 99                                 # 99は指定なし
-
-    if nav_day is None:
-        if 'nav_day' in cookies:
-            nav_day = cookies['nav_day']
-            dt_c = datetime.datetime.strptime(nav_day, '%Y-%m-%d')
-            if dt_c < datetime.datetime.now():
-                nav_day = datetime.datetime.now().strftime('%Y-%m-%d')
-        else:
-            nav_day = datetime.datetime.now().strftime('%Y-%m-%d')
-
+    return_data['nav_time'] = int(return_data['nav_time'])
     nav_time_flag = False
-    if nav_time is None:
-        if 'nav_time' in cookies:
-            nav_time = int(cookies['nav_time'])
-        else:
-            nav_time = 6 * (datetime.datetime.now().hour // 6)  # '//' 整数除算(割り算の整数部)
-
-    if nav_time == 24:
-        nav_time = 0
+    if return_data['nav_time'] == 24:
+        return_data['nav_time'] = 0
         nav_time_flag = True
 
-    # 番組表示開始時間
-    start_time = datetime.datetime.strptime(f"{nav_day} {nav_time}:00:00", '%Y-%m-%d %H:%M:%S')
+    # 番組表示開始時間f
+    start_time = datetime.datetime.strptime(f"{return_data['nav_day']} {return_data['nav_time']}:00:00", '%Y-%m-%d %H:%M:%S')
     if nav_time_flag:
         start_time = start_time + datetime.timedelta(days=1)    # 次の日
         dt = start_time - datetime.datetime.now()
@@ -88,8 +62,14 @@ def set_default_query_param(service_type: str, service_id: int, genre: int, nav_
     # 番組表示終了時間
     end_time = start_time + datetime.timedelta(hours=6)
 
-    return service_type, service_id, genre, nav_day, nav_time, start_time, end_time
-# ---------------------------------------------------------------------------
+    return_data['service_id'] = int(return_data['service_id'])
+    return_data['genre']      = int(return_data['genre'])
+    return_data['start_time'] = start_time
+    return_data['end_time']   = end_time
+
+    # return return_data とするのが普通だが、呼び出し元で書きやすいようにした。
+    return return_data['service_type'], return_data['service_id'], return_data['genre'], return_data['nav_day'], return_data['nav_time'], return_data['start_time'], return_data['end_time']
+# --------------------------------------------------
 
 
 def make_nav_menu_days(start_time: datetime.datetime):

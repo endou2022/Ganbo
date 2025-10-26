@@ -3,15 +3,14 @@
 # ---------------------------------------------------------------------------
 import datetime
 
-from jinja2 import Environment, FileSystemLoader
-from fastapi import APIRouter, Header, Form
-from fastapi.responses import HTMLResponse
 import mysql.connector as mydb
+from fastapi import APIRouter, Request
+from fastapi.responses import HTMLResponse
+from jinja2 import Environment, FileSystemLoader
 
-from prog import g91, config
+from prog import config, g91
 
 env_j2 = Environment(loader=FileSystemLoader('./templates'), autoescape=True)
-
 router = APIRouter(tags=['番組表'])
 # --------------------------------------------------
 
@@ -19,14 +18,9 @@ router = APIRouter(tags=['番組表'])
 @router.get('/')
 @router.get('/daily')
 @router.post('/daily')
-def get_programs_daily(service_type: str = Form(None), service_id: int = Form(None), genre: int = Form(None), nav_day: str = Form(None), nav_time: int = Form(None), cookie: str = Header(None)):
+async def get_programs_daily(request: Request):
     '''番組表を出力する
-    - service_type : サービスのタイプ  (GR | BS | CS) ない場合はGR
-    - service_id : サービスID=0の場合は指定なし
-    - genre : ジャンル番号=99の場合は指定なし
-    - nav_day  : 表示する日にち ない場合は今日
-    - nav_time : 表示する時間帯 ない場合は現在の時間帯
-    - cookie : クッキーの文字列 name:str=Cookie()で取得することもできるが、Cookie()は1つのクッキーしか得られない
+    - request: Request フォームからのパラメータ
     - return : 番組表(HTML)
     - link https://www.nblog09.com/w/2019/01/05/python-decorator/ (2024/04/01)
     '''
@@ -39,13 +33,12 @@ def get_programs_daily(service_type: str = Form(None), service_id: int = Form(No
     Query , Form , Header などはデコレーターの直後でなければ使うことができない
     本来は @router.get() で受けるべきだが、パスパラメータを表示したくなかったので、FORM メソッドを post にし、 @router.post() とした。
     また、アドレス欄に直打ちして番組表を表示したかったので、デコレータを２重にした。
-    ie.
-    http://aaa.bbb.ccc.ddd:2595/daily             ブラウザのアドレス欄に直打ちして、get メソッドで受け取る。クッキーから最後に表示した条件を受け取る。ただし、クッキーの有効期限はブラウザを閉じるまで
-    http://aaa.bbb.ccc.ddd:2595/daily?xxx=yyy...  番組表のボタンを押して、表示する条件を post メソッドで受け取る。
     '''
+    cookies = request.cookies                   # cookiesは最初からdict # Qwen3-Max 2025/10/11
+    form_data = dict(await request.form())      # Form()パラメータ
+
     # クエリーパラメータにデフォルトを設定にする
-    service_type, service_id, genre, nav_day, nav_time, start_time, end_time = g91.set_default_query_param(
-        service_type, service_id, genre, nav_day, nav_time, cookie)
+    service_type, service_id, genre, nav_day, nav_time, start_time, end_time = g91.set_default_query_param(cookies , form_data)
 
     # nav_menuのパラメータを整える
     page_title = config.__soft_name__ + " 番組表"

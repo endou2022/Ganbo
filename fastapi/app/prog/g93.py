@@ -5,15 +5,16 @@
 # concurrent.futures.ThreadPoolExecutor が threading.Thread の上位互換というが、
 # メインスレッドを停止したときに、サブスレッドが停止してくれないので、今回は利用しなかった
 # ---------------------------------------------------------------------------
-import threading
-import sched        # 組み込みモジュールのイベントスケジューラ。指定時刻にタスクを起動する
-import subprocess
-import time
 import datetime
 import logging
+import sched  # 組み込みモジュールのイベントスケジューラ。指定時刻にタスクを起動する
+import subprocess
+import threading
+import time
 from os.path import splitext
 
-from prog import g06, g94, config
+from prog import config, g06, g94
+
 # ---------------------------------------------------------------------------
 
 

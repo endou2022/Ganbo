@@ -2,17 +2,16 @@
 # 共通ルーチン
 # ---------------------------------------------------------------------------
 import datetime
-import unicodedata
 import re
+import unicodedata
 
-from jinja2 import Environment, FileSystemLoader
-from fastapi import APIRouter
 import mysql.connector as mydb
+from fastapi import APIRouter
+from jinja2 import Environment, FileSystemLoader
 
-from prog import g94, config
+from prog import config, g94
 
 env_j2 = Environment(loader=FileSystemLoader('./templates'), autoescape=True)
-
 router = APIRouter(tags=['共通ルーチン2'])
 # ---------------------------------------------------------------------------
 

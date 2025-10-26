@@ -1,14 +1,13 @@
 # ---------------------------------------------------------------------------
 # 「終了・新番組」ルーチン
 # ---------------------------------------------------------------------------
-from jinja2 import Environment, FileSystemLoader
 from fastapi import APIRouter
 from fastapi.responses import HTMLResponse
+from jinja2 import Environment, FileSystemLoader
 
-from prog import g92, config
+from prog import config, g92
 
 env_j2 = Environment(loader=FileSystemLoader('./templates'), autoescape=True)
-
 router = APIRouter(tags=['終了・新番組'])
 # --------------------------------------------------
 

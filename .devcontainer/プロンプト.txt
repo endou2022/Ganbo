@@ -1,0 +1,4 @@
+FastAPI , docker 、VSCode を使ってWebソフトを複数人で開発しています。
+VSCodeの拡張機能に、autoDocstring , Better Jinja , Python , Pylance , Ruff , Auto Close Tag , Auto Rename Tag を使い開発者間で環境を統一したいと思います。
+devcontainer.json を作成してください。
+推奨する設定も devcontainer.json に記述してください。

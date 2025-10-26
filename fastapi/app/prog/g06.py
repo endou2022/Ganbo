@@ -1,15 +1,15 @@
 # ---------------------------------------------------------------------------
 # 「番組情報更新」ルーチン
 # ---------------------------------------------------------------------------
-import requests
-import logging
 import datetime
 import json
+import logging
 
-from fastapi import APIRouter
 import mysql.connector as mydb
+import requests
+from fastapi import APIRouter
 
-from prog import g92, g94, config
+from prog import config, g92, g94
 
 router = APIRouter(tags=['番組情報更新'])
 # --------------------------------------------------
